@@ -131,11 +131,12 @@ bump:   ## Bumps version
 		fi \
 	fi
 
-.build-venv: .check-python-version awslogin
+.build-venv: .check-python-version
 	@if [ "`poetry config virtualenvs.in-project`" = "true" ]; then \
 		pyenv which python ; \
 		poetry env use `pyenv which python` ; \
 		direnv allow \
+		poetry lock ; \
 		poetry install ; \
 		poetry install ; \
 	else \
