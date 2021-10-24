@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "widgets.scss";
+
+.font-open {
+  font-family: "Open Sans", sans-serif;
+}
+
+.font-code, .font-mono {
+  font-family: 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono",
+  "Courier New", "monospace"
+}
+
+.home_page {
+  .section {
+    @apply mx-5 md:mx-10;
+  }
+}
+
+.modal-overlay {
+  @apply fixed w-full h-screen;
+  @apply inset-0 z-40 overflow-hidden;
+  @apply flex justify-center items-center;
+  @apply bg-gray-100 bg-opacity-30;
+  background: rgba(0, 0, 0, .3);
+}
+
+.menu-divider {
+  width: 90%;
+  position: relative;
+  left: 5%;
+  padding-right: 10px;
+  direction: ltr;
+  border-top: 2px solid #eeeeee;
+}
+
+
+.message {
+  @apply border-t border-b px-4 py-3;
+  &.error {
+    background-color: #fff5f5;
+    border-color: #c53030;
+  }
+
+  &.info {
+    background-color: #bde2f3;
+    border-color: blue;
+  }
+
+  &.success {
+    background-color: #f0fff4;
+    border-color: #9ae6b4;
+
+  }
+
+  &.warning {
+    background-color: ivory;
+    border-color: #faf089;
+
+  }
+}
+
+form {
+  .error-message {
+    @apply font-open text-left text-sm text-red-600 max-w-xs;
+  }
+}
+
+.balloon {
+  @apply fixed top-32 right-3 z-50 bg-bob-primary rounded-full overflow-hidden shadow-2xl;
+
+}
+
+.validation-error {
+  @apply font-open text-xs text-red-600 min-h-full h-3;
+}
+
+label {
+  @apply font-open capitalize text-sm text-gray-400;
+}
+
+input {
+  @apply font-open text-black placeholder-gray-400 focus:placeholder-gray-200 border p-1 rounded-md;
+}
+
+.button {
+  @apply font-open text-white text-sm border rounded-lg cursor-pointer p-1 px-3;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.small {
+    @apply p-1 px-3;
+  }
+
+  &.big {
+    @apply p-3 px-3;
+  }
+
+  &.primary {
+    @apply bg-bob-primary;
+  }
+
+  &.secondary {
+    @apply bg-white text-black;
+  }
+
+  &.danger {
+    @apply bg-red-600 text-white;
+  }
+  :disabled, &.disabled, &.primary:disabled {
+    @apply bg-gray-300 cursor-not-allowed text-gray-50;
+  }
+
+}
+
+.tooltip {
+  @apply invisible leading-6 absolute text-black font-open text-sm bg-white border rounded-md;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-40
+}
+
+header {
+  a.usermenu {
+    @apply pt-2 font-open border-t-4 border-white hover:border-bob-primary transition duration-500 uppercase;
+  }
+
+  a.mybob {
+    @apply font-sans text-lg -mt-10;
+  }
+}
+
+.menu-my-bob {
+  @apply border shadow-lg ;
+  ul {
+    @apply justify-start m-auto pl-3 pr-6 w-full;
+    li {
+      @apply rounded-xlarge mb-1 pl-1 py-2 text-black leading-4;
+      &.active {
+        @apply bg-bob-primary text-white;
+      }
+
+      &:hover:not(.active) {
+        @apply bg-gray-200;
+      }
+
+      a {
+        @apply text-xs lg:text-sm ml-3 uppercase w-full block;
+      }
+    }
+  }
+}
+
+@screen lg {
+  .menu-my-bob {
+    ul {
+      @apply justify-start m-auto  pl-3 pr-6 w-full;
+      li {
+        @apply rounded-xlarge mb-2 pl-1 py-1 text-black leading-7;
+      }
+    }
+  }
+}
+/* Tab content - closed */
+.accordion-content {
+  max-height: 0;
+  //-webkit-transition: max-height .35s;
+  //-o-transition: max-height .35s;
+  //transition: max-height .35s;
+}
+
+/* :checked - resize to full height */
+.accordion input:checked ~ .accordion-content {
+  max-height: 100vh;
+}
+
+/* Label formatting when open */
+.accordion input:checked + label {
+  //font-size: 1.25rem; /*.text-xl*/
+  padding: 1.25rem; /*.p-5*/
+  //border-left-width: 2px; /*.border-l-2*/
+  //border-color: #6574cd; /*.border-indigo*/
+  //background-color: #f8fafc; /*.bg-gray-100 */
+  //color: #6574cd; /*.text-indigo*/
+}
+
+.helptext {
+  ul {
+    li {
+      @apply font-open text-xs;
+    }
+  }
+}
+
+.account-toolbar {
+  @apply mb-2 mx-3 flex mt-5 gap-4 ;
+  .toolbar-button {
+    @apply w-8 flex-1 mr-2 has-tooltip;
+    .tooltip {
+      @apply mt-2 font-open p-1 px-3 font-bold border;
+    }
+  }
+}

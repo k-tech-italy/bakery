@@ -1,0 +1,67 @@
+FROM python:3.8-slim-buster
+
+ARG BUILD_DATE
+ARG PIPENV_ARGS
+ARG VERSION
+ARG TEST
+
+ARG AWS_DOMAIN_OWNER
+ARG AWS_REGION
+ARG REPO_NAME
+ARG KT_REPO_PASSWORD
+ARG AWS_TOKEN
+
+ENV CPLUS_INCLUDE_PATH /usr/include/libxml2/
+ENV C_INCLUDE_PATH /usr/include/libxml2/
+ENV TEST ${TEST}
+
+RUN set -x \
+    && echo " \
+        cpp \
+        gcc \
+        git \
+        libc6-dev \
+        libffi-dev \
+        libjpeg-dev \
+        libmaxminddb-dev \
+        libpq-dev \
+        libsasl2-dev \
+        libssl-dev \
+        libcurl4-openssl-dev \
+        libxml2-dev \
+        libxmlsec1-dev \
+        libxslt-dev \
+        libyaml-dev \
+        libzmq3-dev \
+        pkg-config \
+        python3-dev \
+    " > /tmp/buildDeps \
+    && apt-get update && apt-get install -y --no-install-suggests --no-install-recommends `cat /tmp/buildDeps` && rm -rf /var/lib/apt/lists/*
+
+
+RUN set -x \
+    && runDeps=" \
+        gosu \
+        libxml2 \
+    " \
+    && apt-get update && apt-get install -y --no-install-suggests --no-install-recommends $runDeps && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /code
+COPY poetry.lock pyproject.toml /code/
+WORKDIR /code
+
+RUN set -ex \
+    ls -al /code \
+    && pip install -U pip poetry \
+    && poetry config virtualenvs.create false \
+    && poetry install --no-root --no-dev --no-interaction --no-ansi \
+    && sha1sum poetry.lock > /CHECKSUM
+
+
+RUN apt-get purge -y --auto-remove `cat /tmp/buildDeps` \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -fr /root/.cache/ \
+    && rm -fr /usr/include/
+
+RUN groupadd -g 1024 -r ktech \
+    && useradd -m -g ktech {{cookiecutter.project__slug}}

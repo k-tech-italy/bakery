@@ -1,0 +1,10 @@
+.*
+~*
+!.gitignore
+!*.example
+!.python-version
+
+__pycache__
+
+# demo folders
+demo-*/

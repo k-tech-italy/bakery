@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block body %}
+    {{ block.super }}
+
+    <main class="p-4">
+        <div class="container mx-auto bg-gray-100 rounded p-4 m-4 shadow-md">
+            <h1>Mini TailwindCSS & KnockoutJS demo</h1>
+        </div>
+
+        <div class="container mx-auto bg-gray-100 rounded p-4 shadow-md">
+            <form>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>Item</div>
+                    <input class="rounded bg-gray-200 pl-2 shadown-md" type="text" name="item">
+
+                    <div>Amount</div>
+                    <input class="rounded bg-gray-200 pl-2 shadow-md" type="text" name="amount">
+                </div>
+
+                <div class="grid pt-4">
+                    <button class="bg-blue-400 rounded shadow-md" type="button" data-bind="click: addItem">Add</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="container mx-auto bg-gray-100 rounded p-4 m-4 shadow-md">
+            <div class="grid grid-cols-4 gap-4 mb-4">
+                <p class="font-medium">Id</p>
+                <p>Item</p>
+                <p>Amount</p>
+                <p></p>
+            </div>
+
+            <div class="grid grid-cols-4 gap-4" data-bind="foreach: items">
+                <p data-bind="text: $index"></p>
+                <p data-bind="text: item"></p>
+                <p data-bind="text: amount"></p>
+
+                <button class="bg-red-400 p-1 rounded shadow-md"
+                    type="button"
+                    data-bind="click: $parent.removeItem">Remove</button>
+            </div>
+        </div>
+    </main>
+{% endblock body %}

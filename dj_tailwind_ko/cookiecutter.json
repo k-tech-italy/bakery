@@ -1,0 +1,10 @@
+{
+    "project__name": "KTech Demo",
+    "project__slug": "{{ cookiecutter.project__name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+    "project__version": "0.1.0",
+    "project__author": "KTech",
+    "environ__prefix": "{{ cookiecutter.project__slug.upper()|replace('_', '') }}",
+    "_copy_without_render": [
+        "*.html"
+    ]
+}

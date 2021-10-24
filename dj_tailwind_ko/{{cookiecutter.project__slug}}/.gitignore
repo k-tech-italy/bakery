@@ -1,0 +1,10 @@
+.*
+~*
+!.gitignore
+!*.example
+!.python-version
+!.bumpversion.cfg
+
+*.sqlite3
+__pycache__
+node_modules
