@@ -13,7 +13,7 @@ trigger:
 
 variables:
 - group: adp-test-variables
-- name: {{cookiecutter.environ_prefix}}_DATABASE_URL
+- name: {{cookiecutter.environ__prefix}}_DATABASE_URL
   value: postgres://postgres:test@localhost:5432/test
 
 resources:
