@@ -1,0 +1,100 @@
+# Azure Pipeline
+# Builds docker image and release to DEV
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - 'release/*'
+  paths:
+    exclude:
+      - docs/*
+      - '*.md'
+
+variables:
+- group: aws_pypi_build_credentials
+- group: aws_ecr_RO_credentials
+- name: DJANGO_SETTINGS_MODULE
+  value: {{cookiecutter.project__slug}}.config.settings
+- name: CONTAINER_NAME
+  value: wfp-{{cookiecutter.project__slug}}
+- name: IMAGE_NAME
+  value: wfp/{{cookiecutter.project__slug}}
+- name: {{cookiecutter.environ__prefix}}_DATABASE_URL
+  value: postgres://postgres:test@localhost:5432/test
+
+resources:
+  containers:
+  - container: postgres
+    image: postgres:11
+    env:
+       POSTGRES_PASSWORD: test
+       POSTGRES_HOST_AUTH_METHOD: trust
+       PGDATA: /var/lib/postgresql/data
+    ports:
+       - 5432:5432/tcp
+
+services:
+  postgres: postgres
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+      versionSpec: '3.9'
+      architecture: 'x64'
+
+- script: |
+    pip3 install --upgrade pip wheel poetry
+    poetry config virtualenvs.create false
+  displayName: 'poetry setup'
+
+- bash: |
+    echo "##vso[task.setvariable variable=AWS_TOKEN;]`aws codeartifact get-authorization-token --domain cbt-artifacts --query authorizationToken --output text`"
+  env:
+    AWS_REGION: eu-west-1
+    AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+    AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+  displayName: 'Finding CodeArtifactToken'
+
+- script: |
+    echo "Using CodeArtifact token $(AWS_TOKEN)"
+    poetry config repositories.wfpcbt "https://cbt-artifacts-$(AWS_DOMAIN_OWNER).d.codeartifact.$(AWS_REGION).amazonaws.com/pypi/$(AWS_REPO_NAME)/simple/"
+    poetry config http-basic.wfpcbt aws "$(AWS_TOKEN)"
+    poetry config repositories.wfp "https://worldfoodprogramme.pkgs.visualstudio.com/_packaging/WFPPythonPackages/pypi/simple/"
+    poetry config http-basic.wfp WFPPythonPackages $(WFP_PACKAGE_REPO_TOKEN)
+    poetry install -vv
+  displayName: 'Install dependencies and package'
+
+- script: |
+    python -m py.test tests --create-db --junitxml=pytest.xml -vv \
+        --cov-report=xml --cov-report=html --cov-report=term \
+        --cov-config=tests/.coveragerc \
+        --cov={{cookiecutter.project__slug}}
+  env:
+    {{cookiecutter.environ__prefix}}_DATABASE_URL: $({{cookiecutter.environ__prefix}}_DATABASE_URL)
+  displayName: 'Run tests'
+
+- script: |
+      echo "##vso[task.setvariable variable=VERSION;]"`grep "^VERSION=" docker/Makefile | cut -d "=" -f 2`
+      echo "##vso[task.setvariable variable=BASE;]"`grep "^VERSION=" docker/Makefile | cut -d "=" -f 2 | cut -d "." -f 1,2`
+  displayName: 'Finding version number'
+
+- script: |
+      docker build \
+      --build-arg AWS_DOMAIN_OWNER="$(AWS_DOMAIN_OWNER)" \
+      --build-arg AWS_REGION="$(AWS_REGION)" \
+      --build-arg REPO_NAME="$(AWS_REPO_NAME)" \
+      --build-arg WFP_REPO_PASSWORD="$(WFP_PACKAGE_REPO_TOKEN)" \
+      --build-arg AWS_TOKEN="$(AWS_TOKEN)" \
+      -t $(DOCKER_REGISTRY)/$(IMAGE_NAME)/base:$(BASE) \
+      -f docker/Dockerfile.base  .
+      docker build \
+      --build-arg BASE_IMAGE="$(BASE)" \
+      --build-arg DOCKER_REGISTRY="$(DOCKER_REGISTRY)" \
+      -t $(IMAGE_NAME):$VERSION \
+      -t $(IMAGE_NAME):latest \
+      -f docker/Dockerfile .
+  displayName: 'Build image'

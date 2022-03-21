@@ -112,11 +112,6 @@ bump:   ## Bumps version
 	bumpversion --no-commit --allow-dirty $$PART
 	@grep "^version = " pyproject.toml
 
-.zap:
-	@rm -f *.db
-	@./manage.py migrate
-	@echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'noreply@k-tech.it', 'admin')" | python manage.py shell
-
 .check-python-version:
 	@if [ "${PYTHON_VERSION}" = "" ]; then \
 		echo "No .python-version specified in ${PRJ} . Will not create venv" ; \
@@ -162,3 +157,10 @@ runonce:  ## Initialize and run Django for the first time.
 run:  ## Run a Django development webserver (assumes that `runonce` was previously run).
 	npm run build
 	./manage.py runserver
+
+.reset-db:
+	@tools/dev/initdb.sh
+
+.zap: .reset-db
+	./manage.py upgrade --migrate all --verbosity 1
+	./manage.py demo setup

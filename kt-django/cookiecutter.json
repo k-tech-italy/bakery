@@ -5,6 +5,7 @@
     "project__author": "G.Bronzini",
     "environ__prefix": "{{ cookiecutter.project__slug.upper()|replace('_', '') }}",
     "project__title": "{{ cookiecutter.project__slug|replace('_',' ')|title()|replace(' ','') }}",
+    "startingproject__name": "core",
     "_copy_without_render": [
         "*.html"
     ]

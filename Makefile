@@ -13,7 +13,7 @@ guard-%:
         exit 1; \
     fi
 
-EXECUTABLES = pyenv poetry cookiecutter 
+EXECUTABLES = pyenv poetry cookiecutter
 REQUIRED_EXECUTABLES := $(foreach exec,$(EXECUTABLES),\
 	$(if $(shell which $(exec)),some string,$(error "Couldn't find: `$(exec)` in PATH.")))
 
@@ -44,7 +44,7 @@ help:
 
 .bake-list:
 	@echo "You need to specify one of the following available recipe:"
-	@python -c "import os; print('\n'.join([f'PRJ={x} make bake' for x in os.listdir() if os.path.isfile(f'./{x}/cookiecutter.json')]))"
+	@python3 -c "import os; print('\n'.join([f'PRJ={x} make bake' for x in os.listdir() if os.path.isfile(f'./{x}/cookiecutter.json')]))"
 
 bake: ## Bake the recipe into a cookie! Prefix with PRJ=<name> for baking the project
 	@if [ "${PRJ}" = "" ]; then \
@@ -60,6 +60,9 @@ bake: ## Bake the recipe into a cookie! Prefix with PRJ=<name> for baking the pr
 		echo "${PRJ}" > ./demo-${PRJ}/.cookie ; \
 		cd ./demo-${PRJ} && cookiecutter ../${PRJ} ; \
 		cd * ; \
+		if [ -f .nvmrc.example ]; then \
+			cp .nvmrc.example .nvmrc ; \
+		fi ; \
 		cp .env.example .env ; \
 		cp .envrc.example .envrc ; \
 		echo "baked ${PRJ} in demo-${PRJ}/" ; \

@@ -20,7 +20,6 @@ from .environ import env
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_beat',
 
     # Project apps.
     '{{cookiecutter.project__slug}}',
@@ -60,6 +60,37 @@ MIDDLEWARE = [
 
     # Third party middlewares.
 ]
+
+if ddt_key := env('DDT_KEY'):
+    ignored = RegexList(('/api/.*',))
+
+    def show_ddt(request):
+        # use https://bewisse.com/modheader/ to set custom header
+        # key must be `X-DDT` (no HTTP_ prefix no underscore)
+        if request.user.is_authenticated:
+            if request.path in ignored:
+                return False
+        return request.META.get('COLOMBIADATACONSOLE_DDT_KEY') == ddt_key
+    DEBUG_TOOLBAR_CONFIG = {'SHOW_TOOLBAR_CALLBACK': show_ddt,
+                            'JQUERY_URL': '',
+                            }
+    DEBUG_TOOLBAR_PANELS = [
+        # 'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        # 'debug_toolbar.panels.settings.SettingsPanel',
+        # 'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        # 'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        # 'debug_toolbar.panels.signals.SignalsPanel',
+        # 'debug_toolbar.panels.logging.LoggingPanel',
+        # 'debug_toolbar.panels.redirects.RedirectsPanel',
+    ]
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+    INSTALLED_APPS.append('debug_toolbar')
+    INTERNAL_IPS = ['127.0.0.1', 'localhost', '0.0.0.0', '*']
 
 
 ROOT_URLCONF = '{{cookiecutter.project__slug}}.config.urls'
@@ -92,6 +123,22 @@ DATABASES = {
     'default': env.db('DATABASE_URL'),
 }
 
+DATABASE_FOR_APPS = {
+    '*': 'default',
+}
+
+DATABASE_APPS = ['{{cookiecutter.startingproject__name}}', ]
+
+for k in DATABASE_APPS:
+    DATABASES[k] = env.db('DATABASE_URL')
+    DATABASES[k]['OPTIONS'] = {'options': f'-c search_path={k}'}
+    DATABASE_FOR_APPS[k] = k
+
+DATABASES['default']['OPTIONS'] = {'options': '-c search_path=django'}
+
+DATABASE_ROUTERS = [
+    'django_database_for_apps.Router'
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -132,8 +179,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_ROOT = env('STATIC_ROOT')
+STATIC_ROOT = env.str('STATIC_ROOT')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    str(BASE_DIR / 'web' / 'static'),
+]
+
+MEDIA_ROOT = env('MEDIA_ROOT')
+MEDIA_URL = '/media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

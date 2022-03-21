@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django_filters',
     'easyaudit',
     'rest_framework',
+    'django_js_reverse',
 ]
 
 MIDDLEWARE = [
@@ -175,9 +176,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+STATIC_ROOT = env.str('STATIC_ROOT')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'web/static'),
 ]
 
 # Default primary key field type

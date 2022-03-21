@@ -22,6 +22,9 @@ uwsgi = "*"
 celery = "^5.1.2"
 django-celery-beat = "^2.2.1"
 django-strategy-field = "*"
+django-extensions = "*"
+django-database-for-apps = "*"
+psycopg2-binary = "*"
 
 [tool.poetry.dev-dependencies]
 bumpversion = "*"
@@ -36,6 +39,7 @@ pytest-echo = "*"
 pytest-pythonpath = "*"
 pytest-env = "*"
 tox = "*"
+django-debug-toolbar = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

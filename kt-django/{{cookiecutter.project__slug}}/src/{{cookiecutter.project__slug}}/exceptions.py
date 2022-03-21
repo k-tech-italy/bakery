@@ -1,4 +1,4 @@
-class {{coockiecutter.project__title}}Error(Exception):
+class {{cookiecutter.project__title}}Error(Exception):
     default_message = 'Error'
 
     def __init__(self, message=None, **kwargs):
@@ -6,5 +6,5 @@ class {{coockiecutter.project__title}}Error(Exception):
         self.extra = kwargs
 
 
-class ImproperlyConfigured({{coockiecutter.project__title}}Error):
+class ImproperlyConfigured({{cookiecutter.project__title}}Error):
     pass

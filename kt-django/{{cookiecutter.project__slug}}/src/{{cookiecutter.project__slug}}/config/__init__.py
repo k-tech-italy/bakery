@@ -23,7 +23,7 @@ DEFAULTS = {
     'DATABASE_URL': (str, 'psql://postgres:@127.0.0.1:5432/{{cookiecutter.project__slug}}_db'),
     'DEBUG': (bool, False),
     'DEV_FOOTER_INFO': (str, uuid.uuid4()),
-
+    'DDT_KEY': (str, uuid.uuid4()),
     'EMAIL_BACKEND': (str, 'django.core.mail.backends.smtp.EmailBackend'),
     'EMAIL_HOST': (str, 'smtp.gmail.com'),
     'EMAIL_HOST_USER': (str, 'noreply@k-tech.it'),

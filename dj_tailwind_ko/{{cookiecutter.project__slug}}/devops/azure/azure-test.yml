@@ -1,0 +1,92 @@
+# Azure Pipeline
+# Tests source code
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - 'develop'
+  paths:
+    exclude:
+      - docs/*
+      - '*.md'
+
+variables:
+- group: aws_pypi_build_credentials
+- group: aws_ecr_RO_credentials
+- name: DJANGO_SETTINGS_MODULE
+  value: {{cookiecutter.project__slug}}.config.settings
+- name: CONTAINER_NAME
+  value: wfp-{{cookiecutter.project__slug}}
+- name: IMAGE_NAME
+  value: wfp/{{cookiecutter.project__slug}}
+- name: {{cookiecutter.environ__prefix}}_DATABASE_URL
+  value: postgres://postgres:test@localhost:5432/test
+
+resources:
+  containers:
+  - container: postgres
+    image: postgres:11
+    env:
+       POSTGRES_PASSWORD: test
+       POSTGRES_HOST_AUTH_METHOD: trust
+       PGDATA: /var/lib/postgresql/data
+    ports:
+       - 5432:5432/tcp
+
+services:
+  postgres: postgres
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+      versionSpec: '3.9'
+      architecture: 'x64'
+
+- script: |
+    pip3 install --upgrade pip wheel poetry
+    poetry config virtualenvs.create false
+  displayName: 'poetry setup'
+
+- bash: |
+    echo "##vso[task.setvariable variable=AWS_TOKEN;]`aws codeartifact get-authorization-token --domain cbt-artifacts --query authorizationToken --output text`"
+  env:
+    AWS_REGION: eu-west-1
+    AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+    AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+  displayName: 'Finding CodeArtifactToken'
+
+- script: |
+    echo "Using CodeArtifact token $(AWS_TOKEN)"
+    poetry config repositories.wfpcbt "https://cbt-artifacts-$(AWS_DOMAIN_OWNER).d.codeartifact.$(AWS_REGION).amazonaws.com/pypi/$(AWS_REPO_NAME)/simple/"
+    poetry config http-basic.wfpcbt aws "$(AWS_TOKEN)"
+    poetry config repositories.wfp "https://worldfoodprogramme.pkgs.visualstudio.com/_packaging/WFPPythonPackages/pypi/simple/"
+    poetry config http-basic.wfp WFPPythonPackages $(WFP_PACKAGE_REPO_TOKEN)
+    poetry install -vv
+  displayName: 'Install dependencies and package'
+
+- script: |
+    python -m py.test tests --create-db --junitxml=pytest.xml -vv \
+        --cov-report=xml --cov-report=html --cov-report=term \
+        --cov-config=tests/.coveragerc \
+        --cov={{cookiecutter.project__slug}}
+  env:
+    {{cookiecutter.environ__prefix}}_DATABASE_URL: $({{cookiecutter.environ__prefix}}_DATABASE_URL)
+  displayName: 'Run tests'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: "pytest.xml"
+    testResultsFormat: 'JUnit'
+    testRunTitle: 'Test with Python $(PYTHON_VERSION)'
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/pytest.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/~build/coverage'
+    searchFolder: '$(system.defaultworkingdirectory)/tests'

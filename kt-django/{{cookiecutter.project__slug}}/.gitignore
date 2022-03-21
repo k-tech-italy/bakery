@@ -4,6 +4,9 @@
 !*.example
 !.python-version
 !.bumpversion.cfg
+!.secrets.baseline
+!.isort.cfg
+!.flake8
 
 *.sqlite3
 __pycache__
