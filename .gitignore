@@ -1,7 +1,7 @@
 .*
 ~*
 !.gitignore
-!*.example
+!.*.example
 !.python-version
 
 __pycache__

@@ -2,5 +2,5 @@
 ~*
 !.gitignore
 !.pre-commit-config.yaml
-!*.example
+!.*.example
 !.python-version
