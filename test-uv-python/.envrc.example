@@ -1,0 +1,8 @@
+if [ -e .env ]; then
+  dotenv
+fi
+export PYTHONPATH="$PYTHONPATH:./src"
+
+. .venv/bin/activate
+
+unset PS1

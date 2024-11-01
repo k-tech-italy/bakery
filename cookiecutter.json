@@ -1,0 +1,24 @@
+{
+    "templates": {
+        "dj_tailwind_ko": {
+            "path": "./dj_tailwind_ko",
+            "title": "dj_tailwind_ko",
+            "description": "A cookiecutter template for a django tailwind project"
+        },
+        "kt-django": {
+            "path": "./kt-django",
+            "title": "kt-django",
+            "description": "A cookiecutter template for a django project"
+        },
+        "uv-mkdocs": {
+            "path": "./uv-mkdocs",
+            "title": "uv-mkdocs",
+            "description": "A cookiecutter template for a uv-mkdocs project"
+        },
+        "uv-python": {
+            "path": "./uv-python",
+            "title": "uv-python",
+            "description": "A cookiecutter template for a uv-python project"
+        }
+    }
+}

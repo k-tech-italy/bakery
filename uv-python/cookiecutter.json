@@ -1,0 +1,14 @@
+{
+    "project__name": "K-Tech Project Name",
+    "project__slug": "{{ cookiecutter.project__name | slugify }}",
+    "project__module": "{{ cookiecutter.project__slug | replace('-', '_') }}",
+    "project__version": "0.1.0",
+    "project__author": "G.Bronzini",
+    "python__version": 3.12,
+    "mkdocs": true,
+    "exe_builder": false,
+    "mkdocs_glossary__terms": "Alpha,Beta",
+    "_copy_without_render": [
+        "*.html"
+    ]
+}
