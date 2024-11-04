@@ -59,13 +59,6 @@ bake: ## Bake the recipe into a cookie! Prefix with PRJ=<name> for baking the pr
 		rm -rf ./demo-${PRJ}/* ; \
 		echo "${PRJ}" > ./demo-${PRJ}/.cookie ; \
 		cd ./demo-${PRJ} && cookiecutter ../${PRJ} ; \
-		cd * ; \
-		if [ -f .nvmrc.example ]; then \
-			cp .nvmrc.example .nvmrc ; \
-		fi ; \
-		cp .env.example .env ; \
-		cp .envrc.example .envrc ; \
 		echo "baked ${PRJ} in demo-${PRJ}/" ; \
-		$(MAKE) --no-print-directory runonce ; \
 	fi
 
