@@ -1,0 +1,15 @@
+.*
+~*
+!.gitignore
+!*.example
+!.python-version
+!.bumpversion.cfg
+!.secrets.baseline
+!.isort.cfg
+!.flake8
+
+*.sqlite3
+__pycache__
+node_modules
+!docs/wiki/**/.attachments
+!.keep
