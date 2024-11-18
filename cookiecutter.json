@@ -19,6 +19,11 @@
             "path": "./uv-python",
             "title": "uv-python",
             "description": "A cookiecutter template for a uv-python project"
+        },
+        "kt-react": {
+            "path": "./kt-react",
+            "title": "kt-react",
+            "description": "A cookiecutter template for react project"
         }
     }
 }

@@ -1,0 +1,12 @@
+{
+    "project__name": "K-Tech Project Name",
+    "project__slug": "{{ cookiecutter.project__name | slugify }}",
+    "project__module": "{{ cookiecutter.project__slug | replace('-', '_') }}",
+    "project__version": "0.1.0",
+    "project__author": "D.campana",
+    "be_port": "8000",
+    "test_user": "admin",
+    "test_password": "admin",
+    "nvm_version": ""
+  }
+  
