@@ -4,9 +4,8 @@
     "project__module": "{{ cookiecutter.project__slug | replace('-', '_') }}",
     "project__version": "0.1.0",
     "project__author": "G.Bronzini",
-    "environ__prefix": "{{ cookiecutter.project__slug.upper()|replace('_', '') }}",
-    "project__title": "{{ cookiecutter.project__slug|replace('_',' ')|title()|replace(' ','') }}",
-    "startingproject__name": "core",
+    "project__description": "A Django React project",
+    "environ__prefix": "{{ cookiecutter.project__slug.upper()|replace('-', '') }}",
     "_copy_without_render": [
         "*.html"
     ]

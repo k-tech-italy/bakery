@@ -1,0 +1,13 @@
+version: '3'
+# to activate : docker-compose up -d
+services:
+  frontend:
+    container_name: frontend
+    image: node:22
+    ports:
+     - "5173:5173"
+    stdin_open: true
+    environment:
+      REACT_APP_API_BASE_URL: "http://localhost:8000"
+    command: npm run dev
+  
