@@ -51,7 +51,7 @@ DEFAULTS = {
     'ADMIN_PASSWORD': (str, ''),
     'ADMIN_EMAIL': (str, ''),
 
-    'FRONTEND_URL': (str, str(Path(__file__).parent.parent.parent / 'frontend/dist')),
+    'FRONTEND_PATH': (str, str(Path(__file__).parent.parent.parent / 'frontend/dist')),
 }
 
 env = Env(**DEFAULTS)

@@ -32,6 +32,8 @@ from django.utils.translation import gettext as _
 from django.views.static import serve as static_serve
 
 from {{ cookiecutter.project__module }}.web.views import LoginView
+from .environ import env
+
 
 def serve(request, path, document_root=None, show_indexes=False):
     path = posixpath.normpath(path).lstrip("/")
@@ -49,7 +51,7 @@ urlpatterns = [
         r"^(?P<path>.*)$",
         serve,
         {
-            "document_root": env('FRONTEND_URL'),
+            "document_root": str(Path(env('FRONTEND_PATH')).absolute()),
         },
     ), # serve frontend files with path /fe/***
 ]
