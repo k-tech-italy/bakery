@@ -5,6 +5,7 @@
     "project__version": "0.1.0",
     "project__author": "G.Bronzini",
     "python__version": 3.12,
+    "click__command": "{{ cookiecutter.project__slug }}",
     "mkdocs": true,
     "exe_builder": false,
     "mkdocs_glossary__terms": "Alpha,Beta",
