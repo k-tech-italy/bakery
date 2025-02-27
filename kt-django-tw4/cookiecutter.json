@@ -1,0 +1,9 @@
+{
+    "project__name": "KTech Django Tailwind 4",
+    "project__slug": "{{ cookiecutter.project__name | slugify }}",
+    "project__module": "{{ cookiecutter.project__slug | replace('-', '_') }}",
+    "project__author": "KTech",
+    "_copy_without_render": [
+        "*.html"
+    ]
+}

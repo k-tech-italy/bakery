@@ -1,0 +1,22 @@
+[project]
+name = "{{cookiecutter.project__slug}}"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+packages = [
+    { include = "{{cookiecutter.project__module}}", from = "src" },
+]
+
+dependencies = [
+    "django>=5.1.6",
+]
+
+[dependency-groups]
+dev = [
+    "bumpversion>=0.6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
