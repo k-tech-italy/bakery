@@ -5,6 +5,7 @@
 !.pre-commit-config.yaml
 !.*.example
 !.python-version
+!.nvmrc
 
 node_modules
 *.pyc
