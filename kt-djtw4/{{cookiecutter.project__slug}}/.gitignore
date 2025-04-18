@@ -1,0 +1,14 @@
+.*
+~*
+!.gitignore
+!*.example
+!.python-version
+!.bumpversion.cfg
+!.secrets.baseline
+!.run
+
+*.sqlite3
+__pycache__
+node_modules
+!docs/wiki/**/.attachments
+!.keep

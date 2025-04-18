@@ -1,0 +1,10 @@
+{
+    "project__name": "Django with django-tailwind by K-Tech",
+    "project__slug": "{{ cookiecutter.project__name | slugify }}",
+    "project__module": "{{ cookiecutter.project__slug | replace('-', '_') }}",
+    "project__version": "0.1.0",
+    "project__author": "G.Bronzini",
+    "_copy_without_render": [
+        "*.html"
+    ]
+}

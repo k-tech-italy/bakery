@@ -7,11 +7,8 @@ DB_PORT=`python manage.py shell --no-imports -c "from django.conf import setting
 DB_NAME=`python manage.py shell --no-imports -c "from django.conf import settings; print(settings.DATABASES['default']['NAME'], end='')"`
 
 echo initializing ${DB_ENGINE} database ${DB_NAME}
-psql -h ${DB_HOST} -p ${DB_PORT} -U postgres -c "DROP DATABASE IF EXISTS test_${DB_NAME}" || echo "Could not drop db test_${DB_NAME}"
-psql -h ${DB_HOST} -p ${DB_PORT} -U postgres -c "DROP DATABASE IF EXISTS ${DB_NAME}" || psql -h ${DB_HOST} -p ${DB_PORT} -U postgres -d "${DB_NAME}" -c "DROP SCHEMA django CASCADE" || echo
-psql -h ${DB_HOST} -p ${DB_PORT} -U postgres -c "CREATE DATABASE ${DB_NAME}" || echo "Reusing DB ${DB_NAME}"
+dropdb -h ${DB_HOST} -p ${DB_PORT} -U postgres -f --if-exists "${DB_NAME}"
+dropdb -h ${DB_HOST} -p ${DB_PORT} -U postgres -f --if-exists "test_${DB_NAME}"
+createdb -h ${DB_HOST} -p ${DB_PORT} -U postgres ${DB_NAME} || echo "Reusing DB ${DB_NAME}"
 psql -h ${DB_HOST} -p ${DB_PORT} -U postgres -d "${DB_NAME}" -c "CREATE SCHEMA django"
-#for schema in `python manage.py shell -c "from django.conf import settings; print('\t'.join(settings.DATABASE_APPS))"`; do \
-#		psql -h ${DB_HOST} -p ${DB_PORT} -U postgres -d "${DB_NAME}" -c "DROP SCHEMA IF EXISTS $schema CASCADE" ; \
-#		psql -h ${DB_HOST} -p ${DB_PORT} -U postgres -d "${DB_NAME}" -c "CREATE SCHEMA $schema" ; \
-#	 done
+DJANGO_SUPERUSER_PASSWORD=123 ./manage.py createsuperuser --username admin --email a@a.com --noinput
