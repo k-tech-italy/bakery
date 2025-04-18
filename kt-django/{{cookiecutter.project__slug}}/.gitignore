@@ -5,8 +5,7 @@
 !.python-version
 !.bumpversion.cfg
 !.secrets.baseline
-!.isort.cfg
-!.flake8
+!.run
 
 *.sqlite3
 __pycache__

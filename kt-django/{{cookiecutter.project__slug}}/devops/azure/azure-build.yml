@@ -9,13 +9,13 @@ trigger:
 
 variables:
 - group: adp-test-variables
-- name: {{cookiecutter.environ__prefix}}_DATABASE_URL
+- name: DATABASE_URL
   value: postgres://postgres:test@localhost:5432/test
 
 resources:
   containers:
   - container: postgres
-    image: postgres:11
+    image: postgres:16
     env:
        POSTGRES_PASSWORD: test
        POSTGRES_HOST_AUTH_METHOD: trust
@@ -32,24 +32,22 @@ pool:
 steps:
 - task: UsePythonVersion@0
   inputs:
-      versionSpec: '3.6'
+      versionSpec: '3.13'
       architecture: 'x64'
 
 - script: |
-    mkdir -p /tmp/{{cookiecutter.project__slug}}/media/invites
-    mkdir -p /tmp/{{cookiecutter.project__slug}}/media/tmp
     sudo apt-get install -y libssl-dev
   displayName: 'Install os dependencies'
 
 
 - script: |
-    pip3 install --upgrade pip wheel poetry
-    poetry config virtualenvs.create false
+    pip3 install --upgrade pip
+    curl -LsSf https://astral.sh/uv/install.sh | sh
   displayName: 'sdist'
 
 - bash: |
-    poetry build -f sdist
-    poetry export --with-credentials --without-hashes -f requirements.txt > dist/requirements.txt
+    uv build --sdist
+    uv export --no-dev --no-emit-project --group image --format requirements-txt > dist/requirements.txt
   displayName: 'building package'
 
 - script: |
@@ -60,9 +58,9 @@ steps:
     python -m py.test tests --create-db --junitxml=pytest.xml -vv \
         --cov-report=xml --cov-report=html --cov-report=term \
         --cov-config=tests/.coveragerc \
-        --cov={{cookiecutter.project__slug}}
+        --cov={{cookiecutter.project__module}}
   env:
-    {{cookiecutter.environ__prefix}}_DATABASE_URL: $({{cookiecutter.environ__prefix}}_DATABASE_URL)
+    DATABASE_URL: $(DATABASE_URL)
   displayName: 'Run tests'
 
 - task: PublishTestResults@2
@@ -89,11 +87,16 @@ steps:
 #  displayName: 'Generating Dockerfile.full'
 
 - bash: |
+      docker build-base \
+        ${BUILD_OPTIONS} \
+        --build-arg REPO_NAME="${REPO_NAME}" \
+        -t kt-{{cookiecutter.project__slug}}/base:${BASE} \
+        -f docker/Dockerfile.base  .
       docker build \
-      --build-arg CONTAINER_NAME=$(CONTAINER_NAME) \
-      --build-arg VERSION=$(VERSION) \
-      -t kt-demo:$VERSION \
-      -t kt-demo:latest \
-      -f docker/Dockerfile .
+        --build-arg CONTAINER_NAME=$(CONTAINER_NAME) \
+        --build-arg VERSION=$(VERSION) \
+        -t {{cookiecutter.project__slug}}:$VERSION \
+        -t {{cookiecutter.project__slug}}:latest \
+        -f docker/Dockerfile .
   displayName: 'Build image'
 

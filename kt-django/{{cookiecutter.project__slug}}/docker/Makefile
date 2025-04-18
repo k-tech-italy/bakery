@@ -10,11 +10,13 @@ endif
 VERSION=1.0.0
 BASE?=$(shell echo "${VERSION}" | sed "s/\([0-9]*\)\.\([0-9]*\)\.\(.*\)/\1.\2/g" )
 BUILDDIR?=./~build
-CONTAINER_NAME=kt-{{cookiecutter.project__slug}}
+CONTAINER_NAME={{cookiecutter.project__slug}}
 DOCKER_IMAGE=kt/{{cookiecutter.project__slug}}
 DOCKER_IMAGE_NAME=${DOCKER_IMAGE}:${VERSION}
 DOCKER_IMAGE_FULLNAME=${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${VERSION}
 STACK_PROTOCOL?=https
+MEDIA_ROOT?=../~media
+STATIC_ROOT?=../~static
 
 LOCAL_PORT?=18000
 LOCAL_HTTPS_PORT?=18443
@@ -38,7 +40,11 @@ export PRINT_HELP_PYSCRIPT
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-build-base:  ## Builds the base image
+requirements:  ## Builds the /dist/image-requirements.txt
+	@cd .. && uv build --sdist
+	@uv export --no-dev --no-emit-project --group image --format requirements-txt > ../dist/image-requirements.txt
+
+build-base: requirements  ## Builds the base image
 	cd .. && docker build \
 			${BUILD_OPTIONS} \
 			--build-arg REPO_NAME="${REPO_NAME}" \
@@ -81,21 +87,20 @@ full-release:  build-base build release  ## buils all and releases
 	docker run \
 			--rm \
 	 		--name=${CONTAINER_NAME} \
-			-p ${LOCAL_PORT} \
-			-p ${LOCAL_HTTPS_PORT} \
-			-e DJANGO_SETTINGS_MODULE="{{cookiecutter.project__slug}}.config.settings" \
-			-e {{cookiecutter.environ__prefix}}DEBUG="${{cookiecutter.environ__prefix}}DEBUG}" \
-			-e {{cookiecutter.environ__prefix}}DATABASE_URL="${{cookiecutter.environ__prefix}}DATABASE_URL}" \
-			-e {{cookiecutter.environ__prefix}}DATABASE_APPS="${{cookiecutter.environ__prefix}}DATABASE_APPS}" \
-			-e {{cookiecutter.environ__prefix}}SECRET_KEY="${{cookiecutter.environ__prefix}}SECRET_KEY}" \
-			-e {{cookiecutter.environ__prefix}}ADMIN_EMAIL="${{cookiecutter.environ__prefix}}ADMIN_EMAIL}" \
-			-e {{cookiecutter.environ__prefix}}ADMIN_USERNAME="${{cookiecutter.environ__prefix}}ADMIN_USERNAME}" \
-			-e {{cookiecutter.environ__prefix}}ADMIN_PASSWORD="${{cookiecutter.environ__prefix}}ADMIN_PASSWORD}" \
-			-e {{cookiecutter.environ__prefix}}STATIC_ROOT="/tmp/static" \
-			-e {{cookiecutter.environ__prefix}}MEDIA_ROOT="/tmp/media" \
+			-p "${LOCAL_PORT}:8000" \
+			-p "${LOCAL_HTTPS_PORT}:443" \
+			-e DJANGO_SETTINGS_MODULE="{{cookiecutter.project__module}}.config.settings" \
+			-e DEBUG="${DEBUG}" \
+			-e DATABASE_URL="${DATABASE_URL}" \
+			-e SECRET_KEY="${SECRET_KEY}" \
+			-e ADMIN_EMAIL="${ADMIN_EMAIL}" \
+			-e ADMIN_USERNAME="${ADMIN_USERNAME}" \
+			-e ADMIN_PASSWORD="${ADMIN_PASSWORD}" \
 			-e STACK_PROTOCOL=${STACK_PROTOCOL} \
-			--hostname sfspdb \
+			--hostname host-ktech \
 			-v "`pwd`/certs:/etc/certs:ro" \
+			-v "${STATIC_ROOT}:/data/static" \
+			-v "${MEDIA_ROOT}:/data/media" \
 			${RUN_OPTIONS} \
 			${DOCKER_IMAGE_FULLNAME} \
 			${CMD}

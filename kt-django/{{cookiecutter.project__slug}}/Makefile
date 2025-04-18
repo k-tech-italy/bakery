@@ -1,4 +1,4 @@
-VERSION=0.1.0
+VERSION={{cookiecutter.project__version}}
 BUILDDIR='.build'
 PYTHONPATH:=${PWD}/tests/:${PWD}:${PYTHONPATH}
 BUILDDIR?=./.build
@@ -56,21 +56,14 @@ help:
 
 
 static:  ## build static assets
-	@rm -fr src/{{cookiecutter.project__slug}}/web/static/*
-	@sass src/{{cookiecutter.project__slug}}/web/assets/tw.in.scss | postcss  --config   -o src/{{cookiecutter.project__slug}}/web/assets/tw.css
+	@rm -fr src/{{cookiecutter.project__module}}/web/static/*
+	@sass src/{{cookiecutter.project__module}}/web/assets/tw.in.scss | postcss  --config   -o src/{{cookiecutter.project__module}}/web/assets/tw.css
 	@node_modules/.bin/webpack --mode ${NODE_ENV} --progress  --bail
-	@STATIC_ROOT=src/{{cookiecutter.project__slug}}/web/static ./manage.py collectstatic_js_reverse -v 0
-	@STATIC_ROOT=src/{{cookiecutter.project__slug}}/web/static ./manage.py collectstatic --no-input -v 0
-	@git add src/{{cookiecutter.project__slug}}/web/static
-	@echo $(shell /bin/ls -alu src/{{cookiecutter.project__slug}}/web/static/{{cookiecutter.project__slug}}/app.js)
-	@echo $(shell /bin/ls -alu src/{{cookiecutter.project__slug}}/web/static/{{cookiecutter.project__slug}}/app.css)
-
-develop:  ## configure development environment
-	git config branch.autosetuprebase always
-	@poetry install
-	poetry run pre-commit install
-	poetry run pre-commit install --hook-type pre-push
-	npm install
+	@STATIC_ROOT=src/{{cookiecutter.project__module}}/web/static ./manage.py collectstatic_js_reverse -v 0
+	@STATIC_ROOT=src/{{cookiecutter.project__module}}/web/static ./manage.py collectstatic --no-input -v 0
+	@git add src/{{cookiecutter.project__module}}/web/static
+	@echo $(shell /bin/ls -alu src/{{cookiecutter.project__module}}/web/static/{{cookiecutter.project__module}}/app.js)
+	@echo $(shell /bin/ls -alu src/{{cookiecutter.project__module}}/web/static/{{cookiecutter.project__module}}/app.css)
 
 
 backup_file := ~$(shell date +%Y-%m-%d).json
@@ -78,10 +71,10 @@ reset-migrations: ## reset django migrations
 	./manage.py check
 	find src -name '0*[1,2,3,4,5,6,7,8,9,0]*' | xargs rm -f
 	rm -f *.db
-	./manage.py makemigrations {{cookiecutter.project__slug}}
+	./manage.py makemigrations {{cookiecutter.project__module}}
 	./manage.py makemigrations --check
 	@echo "\033[31;1m You almost there:"
-	@echo "\033[37;1m  - add 'CITextExtension()' as first operations of src/{{cookiecutter.project__slug}}/migrations/0001_initial.py"
+	@echo "\033[37;1m  - add 'CITextExtension()' as first operations of src/{{cookiecutter.project__module}}/migrations/0001_initial.py"
 	@echo "\033[37;1m  - run ./manage.py upgrade --no-input"
 	@echo "\033[37;1m  - run ./manage.py demo --no-input"
 
@@ -112,55 +105,19 @@ bump:   ## Bumps version
 	bumpversion --no-commit --allow-dirty $$PART
 	@grep "^version = " pyproject.toml
 
-.check-python-version:
-	@if [ "${PYTHON_VERSION}" = "" ]; then \
-		echo "No .python-version specified in ${PRJ} . Will not create venv" ; \
-		echo "ABORTING venv creation. Please ignore following error" ; \
-		exit 1 ; \
-	else \
-	  	echo "Do you want to continue setting up a venv?  (y/N)"; \
-		read ANS; \
-		if [ "$${ANS}" != "y" ]; then \
-			echo "DECLINE venv creation. Please ignore following error" ; \
-			exit 1 ; \
-		fi \
-	fi
-
-.build-venv: .check-python-version
-	@if [ "`poetry config virtualenvs.in-project`" = "true" ]; then \
-		pyenv which python ; \
-		poetry env use `pyenv which python` ; \
-		direnv allow \
-		poetry lock ; \
-		poetry install ; \
-		poetry install ; \
-	else \
-		echo "Skipping venv creation as poetry config virtualenvs.in-project is not true"; \
-	fi
-
-.runonce: .build-venv
-	@echo "Try now with following:"
-	@echo "  cd `pwd`"
-	@echo "  make .zap"
-	@echo "  make run"
-	@echo "Login with admin/admin"
-	@touch .initialized
-
-runonce:  ## Initialize and run Django for the first time.
-	@if [ "${INITIALIZED}" = "1" ]; then \
-		echo "Already initialized" ; \
-	else \
-	  echo "Initializing" ; \
-	  $(MAKE) .runonce ; \
-	fi
-
-run:  ## Run a Django development webserver (assumes that `runonce` was previously run).
-	npm run build
-	./manage.py runserver
-
 .reset-db:
 	@tools/dev/initdb.sh
 
 .zap: .reset-db
-	./manage.py upgrade --migrate all --verbosity 1
-	./manage.py demo setup
+	./manage.py upgrade --migrate
+	#./manage.py demo setup
+
+build:
+	uv build --sdist
+
+detect-secrets:  ## Scanning secrets or adding New Secrets to Baseline
+	@if [ ! -f ".secrets.baseline" ]; then \
+  		echo "Initialising secrets" ; \
+		detect-secrets scan > .secrets.baseline ; \
+	fi
+	@detect-secrets scan --baseline .secrets.baseline

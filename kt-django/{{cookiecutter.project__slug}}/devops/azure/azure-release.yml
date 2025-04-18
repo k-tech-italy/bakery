@@ -13,13 +13,13 @@ trigger:
 
 variables:
 - group: adp-test-variables
-- name: {{cookiecutter.environ__prefix}}_DATABASE_URL
+- name: DATABASE_URL
   value: postgres://postgres:test@localhost:5432/test
 
 resources:
   containers:
   - container: postgres
-    image: postgres:11
+    image: postgres:16
     env:
        POSTGRES_PASSWORD: test
        POSTGRES_HOST_AUTH_METHOD: trust
@@ -36,7 +36,7 @@ pool:
 steps:
 - task: UsePythonVersion@0
   inputs:
-      versionSpec: '3.6'
+      versionSpec: '3.13'
       architecture: 'x64'
 
 - script: |
@@ -64,9 +64,9 @@ steps:
     python -m py.test tests --create-db --junitxml=pytest.xml -vv \
         --cov-report=xml --cov-report=html --cov-report=term \
         --cov-config=tests/.coveragerc \
-        --cov={{cookiecutter.project__slug}}
+        --cov={{cookiecutter.project__module}}
   env:
-    {{cookiecutter.environ__prefix}}_DATABASE_URL: $({{cookiecutter.environ__prefix}}_DATABASE_URL)
+    DATABASE_URL: $(DATABASE_URL)
   displayName: 'Run tests'
 
 - task: PublishTestResults@2
@@ -126,10 +126,10 @@ steps:
 
 - bash: |
       python devops/scripts/redeploy.py \
-      --cluster={{cookiecutter.environ__prefix|lower}}-dev-ecs-cluster \
+      --cluster={{cookiecutter.project__slug}}-dev-ecs-cluster \
       --tag latest \
-      --family=dev-{{cookiecutter.environ__prefix|lower}}-web_app-taskdefinition \
-      --service=dev-{{cookiecutter.environ__prefix|lower}}-web_app-service
+      --family=dev-{{cookiecutter.project__slug}}-web_app-taskdefinition \
+      --service=dev-{{cookiecutter.project__slug}}-web_app-service
   env:
     AWS_REGION: eu-west-1
     AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
