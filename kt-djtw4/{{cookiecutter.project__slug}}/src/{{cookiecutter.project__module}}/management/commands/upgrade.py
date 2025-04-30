@@ -7,8 +7,8 @@ from django.core.management import call_command
 from django.core.validators import validate_email
 from django.db import IntegrityError
 
-from {{cookiecutter.project__module}}.config import env
-from {{cookiecutter.project__module}}.sentry import capture_exception
+from {{ cookiecutter.project__module }}.config import env
+from {{ cookiecutter.project__module }}.sentry import capture_exception
 
 User = get_user_model()
 

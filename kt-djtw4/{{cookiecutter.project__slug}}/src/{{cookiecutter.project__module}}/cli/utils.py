@@ -6,7 +6,7 @@ from functools import update_wrapper
 import click
 from click import style
 
-from {{cookiecutter.project__module}}.exceptions import ImproperlyConfigured
+from {{ cookiecutter.project__module }}.exceptions import ImproperlyConfigured
 
 _configured = False
 

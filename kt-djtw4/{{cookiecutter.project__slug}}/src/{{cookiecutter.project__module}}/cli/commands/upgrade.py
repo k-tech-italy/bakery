@@ -3,12 +3,12 @@ from pathlib import Path
 import click
 from django.conf import settings
 
-from {{cookiecutter.project__module}}.cli import global_options
-from {{cookiecutter.project__module}}.config import env
-from {{cookiecutter.project__module}}.signals import (
-    cli_{{cookiecutter.project__module}}_execute_command,
-    cli_{{cookiecutter.project__module}}_upgrade_templates,
-    {{cookiecutter.project__module}}_version_upgraded,
+from {{ cookiecutter.project__module }}.cli import global_options
+from {{ cookiecutter.project__module }}.config import env
+from {{ cookiecutter.project__module }}.signals import (
+    cli_{{ cookiecutter.project__module }}_execute_command,
+    cli_{{ cookiecutter.project__module }}_upgrade_templates,
+    {{ cookiecutter.project__module }}_version_upgraded,
 )
 
 
@@ -17,7 +17,7 @@ def configure_master_app():
     pass
 
 
-def configure_{{cookiecutter.project__module}}_app():
+def configure_{{ cookiecutter.project__module }}_app():
 
     pass
 
@@ -45,7 +45,7 @@ def configure_beat():
 
 
 def configure_dirs(prompt, verbose):
-    from {{cookiecutter.project__module}}.config import env
+    from {{ cookiecutter.project__module }}.config import env
     for _dir in ('MEDIA_ROOT', 'STATIC_ROOT'):
         target = Path(env.str(_dir))
         if not target.exists():
@@ -88,8 +88,8 @@ def upgrade(ctx, prompt, migrate, static, verbose, run_check,  # noqa: C901
     from django.core.management import call_command
     from django.db.transaction import atomic
 
-    from {{cookiecutter.project__module}}.sentry import capture_exception
-    from {{cookiecutter.project__module}}.system import state
+    from {{ cookiecutter.project__module }}.sentry import capture_exception
+    from {{ cookiecutter.project__module }}.system import state
     state.upgrade = True
     try:
 
@@ -99,9 +99,9 @@ def upgrade(ctx, prompt, migrate, static, verbose, run_check,  # noqa: C901
         configure_dirs(prompt, verbose)
         django.setup()
 
-        from {{cookiecutter.project__module}} import get_full_version
-        from {{cookiecutter.project__module}}.models import SysLogEntry
-        from {{cookiecutter.project__module}}.system import core
+        from {{ cookiecutter.project__module }} import get_full_version
+        from {{ cookiecutter.project__module }}.models import SysLogEntry
+        from {{ cookiecutter.project__module }}.system import core
 
         with atomic():
 
@@ -115,24 +115,24 @@ def upgrade(ctx, prompt, migrate, static, verbose, run_check,  # noqa: C901
                     click.echo('Run migrations')
                 call_command('migrate', **extra)
 
-                configure_{{cookiecutter.project__module}}_app()
+                configure_{{ cookiecutter.project__module }}_app()
                 configure_master_app()
 
             if documents:
                 if verbose >= 1:
                     click.echo('Populate default documents')
-                from {{cookiecutter.project__module}}.web.views.terms import Document
+                from {{ cookiecutter.project__module }}.web.views.terms import Document
                 Document.objects.populate()
 
             if emails:
-                from {{cookiecutter.project__module}}.models import SystemEmailTemplate
+                from {{ cookiecutter.project__module }}.models import SystemEmailTemplate
                 SystemEmailTemplate.objects.populate()
 
                 if verbose == 1:
                     click.echo('Populate default Email Templates')
                     click.echo('Populate default Content Pages')
 
-            cli_{{cookiecutter.project__module}}_upgrade_templates.send(sender=core, verbosity=verbose, context=ctx)
+            cli_{{ cookiecutter.project__module }}_upgrade_templates.send(sender=core, verbosity=verbose, context=ctx)
 
             if run_check:
                 from .check import check
@@ -159,14 +159,14 @@ def upgrade(ctx, prompt, migrate, static, verbose, run_check,  # noqa: C901
                 except IntegrityError as e:
                     click.secho(f'Unable to create superuser: {e}', fg='yellow')
 
-        cli_{{cookiecutter.project__module}}_execute_command.send(sender=upgrade, context=ctx)
+        cli_{{ cookiecutter.project__module }}_execute_command.send(sender=upgrade, context=ctx)
 
         last_record = SysLogEntry.objects.filter(organization__is_core=True,
                                                  extra__updated=True).first()
         current_version = get_full_version()
         if not last_record or last_record.extra.get('version', '') != current_version:
-            {{cookiecutter.project__module}}_version_upgraded.send(sender=core, version=current_version)
-            core.logger.info('{{cookiecutter.project__module}} has been updated to %s' % current_version,
+            {{ cookiecutter.project__module }}_version_upgraded.send(sender=core, version=current_version)
+            core.logger.info('{{ cookiecutter.project__module }} has been updated to %s' % current_version,
                              extra={'version': current_version,
                                     'updated': True,
                                     })

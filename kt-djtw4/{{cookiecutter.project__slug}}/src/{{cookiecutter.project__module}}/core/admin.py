@@ -3,7 +3,7 @@ import logging
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
-# from {{cookiecutter.project__module}}.core.models import ExampleBusiness1, ExampleDimension1
+# from {{ cookiecutter.project__module }}.core.models import ExampleBusiness1, ExampleDimension1
 
 logger = logging.getLogger(__name__)
 

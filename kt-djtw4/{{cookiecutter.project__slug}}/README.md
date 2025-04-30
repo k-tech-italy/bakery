@@ -1,5 +1,10 @@
 # TL;DR;
 
+A [Django](https://www.djangoproject.com/) project with:
+- [Django Tailwind](https://django-tailwind.readthedocs.io/en/latest/)
+- [DaisyUI](https://daisyui.com/)
+- [Django Cotton](https://django-cotton.com/)
+
 ## Mandatory requirements
 
 - [UV](https://docs.astral.sh/uv/getting-started/installation/) as package manager, venv manager, and for managing Python binaries

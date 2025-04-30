@@ -58,7 +58,7 @@ steps:
     python -m py.test tests --create-db --junitxml=pytest.xml -vv \
         --cov-report=xml --cov-report=html --cov-report=term \
         --cov-config=tests/.coveragerc \
-        --cov={{cookiecutter.project__module}}
+        --cov={{ cookiecutter.project__module }}
   env:
     DATABASE_URL: $(DATABASE_URL)
   displayName: 'Run tests'
@@ -90,13 +90,13 @@ steps:
       docker build-base \
         ${BUILD_OPTIONS} \
         --build-arg REPO_NAME="${REPO_NAME}" \
-        -t kt-{{cookiecutter.project__slug}}/base:${BASE} \
+        -t kt-{{ cookiecutter.project__slug }}/base:${BASE} \
         -f docker/Dockerfile.base  .
       docker build \
         --build-arg CONTAINER_NAME=$(CONTAINER_NAME) \
         --build-arg VERSION=$(VERSION) \
-        -t {{cookiecutter.project__slug}}:$VERSION \
-        -t {{cookiecutter.project__slug}}:latest \
+        -t {{ cookiecutter.project__slug }}:$VERSION \
+        -t {{ cookiecutter.project__slug }}:latest \
         -f docker/Dockerfile .
   displayName: 'Build image'
 

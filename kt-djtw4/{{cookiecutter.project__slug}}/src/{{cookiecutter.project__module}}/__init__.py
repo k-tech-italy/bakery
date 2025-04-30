@@ -2,9 +2,9 @@ import pathlib
 from functools import lru_cache
 from subprocess import STDOUT
 
-__author__ = "{{cookiecutter.project__author}}"
-__version__ = "{{cookiecutter.project__version}}"
-__name__ = "{{cookiecutter.project__slug}}"
+__author__ = "G.Bronzini"
+__version__ = "{{ cookiecutter.project__version }}"
+__name__ = "{{ cookiecutter.project__slug }}"
 VERSION = __version__
 NAME = __name__
 

@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
-#mkdir -p "/data/{{cookiecutter.project__slug}}/logs" "${STATIC_ROOT}" "${MEDIA_ROOT}"
-#chown ktech -R /data/{{cookiecutter.project__slug}} "${STATIC_ROOT}" "${MEDIA_ROOT}"
+#mkdir -p "/data/{{ cookiecutter.project__slug }}/logs" "${STATIC_ROOT}" "${MEDIA_ROOT}"
+#chown ktech -R /data/{{ cookiecutter.project__slug }} "${STATIC_ROOT}" "${MEDIA_ROOT}"
 
 echo "$*"
 
@@ -26,12 +26,12 @@ if [ "$*" = "run" ]; then
     --static-map "/static=/data/static" \
     --static-map "/media=/data/media" \
     --master \
-    --module {{cookiecutter.project__module}}.config.wsgi \
+    --module {{ cookiecutter.project__module }}.config.wsgi \
     --processes 4 \
     --offload-threads 8
 elif [ "$*" = "worker" ]; then
   setup
-  celery -A {{cookiecutter.project__module}}.config.celery worker --loglevel=INFO  -n wk_%h
+  celery -A {{ cookiecutter.project__module }}.config.celery worker --loglevel=INFO  -n wk_%h
 elif [ "$*" = "stack" ]; then
   setup
   export STACK_PROTOCOL
@@ -41,10 +41,10 @@ elif [ "$*" = "dev" ]; then
   setup
   exec django-admin runserver 0.0.0.0:8000
 elif [ "$*" = "flower" ]; then
-  exec -A {{cookiecutter.project__module}}.config.celery --broker=${CELERY_BROKER_URL} flower
+  exec -A {{ cookiecutter.project__module }}.config.celery --broker=${CELERY_BROKER_URL} flower
 elif [ "$*" = "beat" ]; then
   setup
-  celery -A {{cookiecutter.project__module}}.config.celery beat --loglevel=INFO
+  celery -A {{ cookiecutter.project__module }}.config.celery beat --loglevel=INFO
 else
   exec "$@"
 fi

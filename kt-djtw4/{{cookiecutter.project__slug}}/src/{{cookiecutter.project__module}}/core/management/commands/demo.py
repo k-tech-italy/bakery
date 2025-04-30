@@ -1,7 +1,7 @@
 import djclick as click
 from django.contrib.auth.models import User
 
-from {{cookiecutter.project__module}}.config import env
+from {{ cookiecutter.project__module }}.config import env
 
 
 @click.group()

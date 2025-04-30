@@ -10,7 +10,7 @@ from django.utils.http import urlencode
 from environ import Env
 from smart_env import SmartEnv
 
-from {{cookiecutter.project__module}}.flags import parse_bool
+from {{ cookiecutter.project__module }}.flags import parse_bool
 
 
 def parse_emails(value):
@@ -23,7 +23,7 @@ OPTIONS = dict(
     ADMINS=(parse_emails, ""),
     ADMIN_PANEL_URL=(str, "admin"),
     TEST_USERS=(parse_emails, ""),
-    DATABASE_URL=(str, "psql://postgres:@127.0.0.1:5432/{{cookiecutter.project__slug}}_db"),
+    DATABASE_URL=(str, "psql://postgres:@127.0.0.1:5432/{{ cookiecutter.project__slug }}_db"),
     DEBUG=(bool, False),
     DEV_FOOTER_INFO=(str, uuid.uuid4()),
     EMAIL_BACKEND=(str, "django.core.mail.backends.smtp.EmailBackend"),
@@ -32,12 +32,12 @@ OPTIONS = dict(
     EMAIL_HOST_PASSWORD=(str, ""),
     EMAIL_FROM_EMAIL=(str, ""),
     EMAIL_PORT=(int, 587),
-    EMAIL_SUBJECT_PREFIX=(str, "[{{cookiecutter.project__slug}}]"),
+    EMAIL_SUBJECT_PREFIX=(str, "[{{ cookiecutter.project__slug }}]"),
     EMAIL_USE_LOCALTIME=(bool, False),
     EMAIL_USE_TLS=(bool, True),
     EMAIL_USE_SSL=(bool, False),
     EMAIL_TIMEOUT=(int, 30),
-    MEDIA_ROOT=(str, os.path.join(tempfile.gettempdir(), "{{cookiecutter.project__slug}}", "media")),
+    MEDIA_ROOT=(str, os.path.join(tempfile.gettempdir(), "{{ cookiecutter.project__slug }}", "media")),
     STATIC_ROOT=(str, str(Path(__file__).parent.parent / "web/static")),
     ADMIN_USERNAME=(str, ""),
     ADMIN_PASSWORD=(str, ""),

@@ -1,4 +1,4 @@
-VERSION={{cookiecutter.project__version}}
+VERSION={{ cookiecutter.project__version }}
 BUILDDIR='.build'
 PYTHONPATH:=${PWD}/tests/:${PWD}:${PYTHONPATH}
 BUILDDIR?=./.build
@@ -56,14 +56,14 @@ help:
 
 
 static:  ## build static assets
-	@rm -fr src/{{cookiecutter.project__module}}/web/static/*
-	@sass src/{{cookiecutter.project__module}}/web/assets/tw.in.scss | postcss  --config   -o src/{{cookiecutter.project__module}}/web/assets/tw.css
+	@rm -fr src/{{ cookiecutter.project__module }}/web/static/*
+	@sass src/{{ cookiecutter.project__module }}/web/assets/tw.in.scss | postcss  --config   -o src/{{ cookiecutter.project__module }}/web/assets/tw.css
 	@node_modules/.bin/webpack --mode ${NODE_ENV} --progress  --bail
-	@STATIC_ROOT=src/{{cookiecutter.project__module}}/web/static ./manage.py collectstatic_js_reverse -v 0
-	@STATIC_ROOT=src/{{cookiecutter.project__module}}/web/static ./manage.py collectstatic --no-input -v 0
-	@git add src/{{cookiecutter.project__module}}/web/static
-	@echo $(shell /bin/ls -alu src/{{cookiecutter.project__module}}/web/static/{{cookiecutter.project__module}}/app.js)
-	@echo $(shell /bin/ls -alu src/{{cookiecutter.project__module}}/web/static/{{cookiecutter.project__module}}/app.css)
+	@STATIC_ROOT=src/{{ cookiecutter.project__module }}/web/static ./manage.py collectstatic_js_reverse -v 0
+	@STATIC_ROOT=src/{{ cookiecutter.project__module }}/web/static ./manage.py collectstatic --no-input -v 0
+	@git add src/{{ cookiecutter.project__module }}/web/static
+	@echo $(shell /bin/ls -alu src/{{ cookiecutter.project__module }}/web/static/{{ cookiecutter.project__module }}/app.js)
+	@echo $(shell /bin/ls -alu src/{{ cookiecutter.project__module }}/web/static/{{ cookiecutter.project__module }}/app.css)
 
 
 backup_file := ~$(shell date +%Y-%m-%d).json
@@ -71,10 +71,10 @@ reset-migrations: ## reset django migrations
 	./manage.py check
 	find src -name '0*[1,2,3,4,5,6,7,8,9,0]*' | xargs rm -f
 	rm -f *.db
-	./manage.py makemigrations {{cookiecutter.project__module}}
+	./manage.py makemigrations {{ cookiecutter.project__module }}
 	./manage.py makemigrations --check
 	@echo "\033[31;1m You almost there:"
-	@echo "\033[37;1m  - add 'CITextExtension()' as first operations of src/{{cookiecutter.project__module}}/migrations/0001_initial.py"
+	@echo "\033[37;1m  - add 'CITextExtension()' as first operations of src/{{ cookiecutter.project__module }}/migrations/0001_initial.py"
 	@echo "\033[37;1m  - run ./manage.py upgrade --no-input"
 	@echo "\033[37;1m  - run ./manage.py demo --no-input"
 
@@ -83,8 +83,8 @@ lint:  ## code lint
 	pre-commit run --all-files
 
 clean: ## clean development tree
+	rm -rf src/{{cookiecutter.project__module}}/theme/static_src/node_modules
 	rm -fr ${BUILDDIR} build dist src/*.egg-info .coverage coverage.xml .eggs .pytest_cache *.egg-info
-	rm -fr src/{{cookiecutter.project__module}}/theme/static_src/node_modules
 	find src -name __pycache__ -o -name "*.py?" -o -name "*.orig" -prune | xargs rm -rf
 	find tests -name __pycache__ -o -name "*.py?" -o -name "*.orig" -prune | xargs rm -rf
 	find src/_other_/locale -name django.mo | xargs rm -f

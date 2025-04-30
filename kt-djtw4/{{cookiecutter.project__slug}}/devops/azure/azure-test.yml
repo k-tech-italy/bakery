@@ -40,8 +40,8 @@ steps:
       architecture: 'x64'
 
 - script: |
-    mkdir -p /tmp/{{cookiecutter.project__slug}}/media/invites
-    mkdir -p /tmp/{{cookiecutter.project__slug}}/media/tmp
+    mkdir -p /tmp/{{ cookiecutter.project__slug }}/media/invites
+    mkdir -p /tmp/{{ cookiecutter.project__slug }}/media/tmp
     sudo apt-get install -y libssl-dev
   displayName: 'Install os dependencies'
 
@@ -59,7 +59,7 @@ steps:
     python -m py.test tests --create-db --junitxml=pytest.xml -vv \
         --cov-report=xml --cov-report=html --cov-report=term \
         --cov-config=tests/.coveragerc \
-        --cov={{cookiecutter.project__module}}
+        --cov={{ cookiecutter.project__module }}
   env:
     DATABASE_URL: $(DATABASE_URL)
   displayName: 'Run tests'

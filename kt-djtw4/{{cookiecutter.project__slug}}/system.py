@@ -2,16 +2,16 @@ from functools import partial
 
 from django.utils.functional import SimpleLazyObject, cached_property
 
-from {{cookiecutter.project__module}}.config import env
-from {{cookiecutter.project__module}}.state import State
-from {{cookiecutter.project__module}}.utils.locking.backends.redis import RedisLockBackend
-from {{cookiecutter.project__module}}.utils.locking.manager import LockManager
-from {{cookiecutter.project__module}}.utils.redis import SmartRedis
+from {{ cookiecutter.project__module }}.config import env
+from {{ cookiecutter.project__module }}.state import State
+from {{ cookiecutter.project__module }}.utils.locking.backends.redis import RedisLockBackend
+from {{ cookiecutter.project__module }}.utils.locking.manager import LockManager
+from {{ cookiecutter.project__module }}.utils.redis import SmartRedis
 
 
 class Logger:
     def __init__(self, system):
-        from {{cookiecutter.project__module}}.models import SysLogEntry
+        from {{ cookiecutter.project__module }}.models import SysLogEntry
         self.info = partial(SysLogEntry.info, system.organization)
 
 

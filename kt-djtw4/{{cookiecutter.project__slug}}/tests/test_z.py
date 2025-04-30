@@ -4,4 +4,4 @@ from co_colombia_data_console import __version__
 
 
 def test_version():
-    assert __version__ >= '{{cookiecutter.project__version}}'
+    assert __version__ >= '0.1.0'

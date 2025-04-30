@@ -4,7 +4,7 @@ import os
 import click
 from strategy_field.utils import import_by_name
 
-import {{cookiecutter.project__module}}
+import {{ cookiecutter.project__module }}
 
 from .. import get_full_version
 from .utils import Verbosity
@@ -13,7 +13,7 @@ from .utils import Verbosity
 def print_version(ctx, param, value):
     if not value or ctx.resilient_parsing:
         return
-    click.echo('{{cookiecutter.project__slug}} %s' % get_full_version())
+    click.echo('{{ cookiecutter.project__slug }} %s' % get_full_version())
     click.echo('Using settings: %s' % os.environ.get('DJANGO_SETTINGS_MODULE'))
     ctx.exit()
 
@@ -40,9 +40,9 @@ def global_options(func):
 @global_options
 @click.pass_context
 def cli(ctx, verbose, **kwargs):
-    from {{cookiecutter.project__module}}.config import env
+    from {{ cookiecutter.project__module }}.config import env
     if verbose > 0:
-        click.echo('{{cookiecutter.project__slug}} %s' % get_full_version())
+        click.echo('{{ cookiecutter.project__slug }} %s' % get_full_version())
         click.secho('Settings: %s' % os.environ['DJANGO_SETTINGS_MODULE'])
 
     if ctx.invoked_subcommand is None:
@@ -52,9 +52,9 @@ def cli(ctx, verbose, **kwargs):
                }
 
 
-cli.add_command(import_by_name('{{cookiecutter.project__slug}}.cli.commands.upgrade.upgrade'))
+cli.add_command(import_by_name('{{ cookiecutter.project__slug }}.cli.commands.upgrade.upgrade'))
 
-logger = logging.getLogger('{{cookiecutter.project__slug}}.cli')
+logger = logging.getLogger('{{ cookiecutter.project__slug }}.cli')
 EXTENSIONS = os.environ.get('EXTENSIONS', '')
 
 
@@ -70,4 +70,4 @@ def main():  # pragma: no cover
             logger.warning(e)
 
     os.environ['LOG_LEVEL'] = 'ERROR'
-    cli(prog_name={{cookiecutter.project__module}}.NAME, obj={}, max_content_width=100)
+    cli(prog_name={{ cookiecutter.project__module }}.NAME, obj={}, max_content_width=100)

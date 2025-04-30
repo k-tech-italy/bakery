@@ -40,8 +40,8 @@ steps:
       architecture: 'x64'
 
 - script: |
-    mkdir -p /tmp/{{cookiecutter.project__slug}}/media/invites
-    mkdir -p /tmp/{{cookiecutter.project__slug}}/media/tmp
+    mkdir -p /tmp/{{ cookiecutter.project__slug }}/media/invites
+    mkdir -p /tmp/{{ cookiecutter.project__slug }}/media/tmp
     sudo apt-get install -y libssl-dev
   displayName: 'Install os dependencies'
 
@@ -64,7 +64,7 @@ steps:
     python -m py.test tests --create-db --junitxml=pytest.xml -vv \
         --cov-report=xml --cov-report=html --cov-report=term \
         --cov-config=tests/.coveragerc \
-        --cov={{cookiecutter.project__module}}
+        --cov={{ cookiecutter.project__module }}
   env:
     DATABASE_URL: $(DATABASE_URL)
   displayName: 'Run tests'
@@ -126,10 +126,10 @@ steps:
 
 - bash: |
       python devops/scripts/redeploy.py \
-      --cluster={{cookiecutter.project__slug}}-dev-ecs-cluster \
+      --cluster={{ cookiecutter.project__slug }}-dev-ecs-cluster \
       --tag latest \
-      --family=dev-{{cookiecutter.project__slug}}-web_app-taskdefinition \
-      --service=dev-{{cookiecutter.project__slug}}-web_app-service
+      --family=dev-{{ cookiecutter.project__slug }}-web_app-taskdefinition \
+      --service=dev-{{ cookiecutter.project__slug }}-web_app-service
   env:
     AWS_REGION: eu-west-1
     AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)

@@ -1,7 +1,7 @@
 [project]
-name = "{{cookiecutter.project__slug}}"
-version = "{{cookiecutter.project__version}}"
-description = "{{cookiecutter.project__name}}"
+name = "{{ cookiecutter.project__slug }}"
+version = "{{ cookiecutter.project__version }}"
+description = "{{ cookiecutter.project__name }}"
 readme = "README.md"
 requires-python = ">=3.13"
 authors = [
@@ -31,7 +31,7 @@ classifiers = [
     "Framework :: Django :: 5.2"
 ]
 packages = [
-    { include = "{{cookiecutter.project__module}}", from = "src" },
+    { include = "{{ cookiecutter.project__module }}", from = "src" },
 ]
 dependencies = [
     "celery>=5.5.1",
@@ -41,6 +41,7 @@ dependencies = [
     "django-click>=2.4.1",
     "django-constance>=4.3.2",
     "django-cors-headers>=4.7.0",
+    "django-cotton>=2.0.3",
     "django-debug-toolbar>=5.1.0",
     "django-extensions>=4.1",
     "django-flags>=5.0.13",
