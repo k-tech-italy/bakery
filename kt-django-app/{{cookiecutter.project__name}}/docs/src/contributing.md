@@ -10,4 +10,4 @@ Install [uv](https://docs.astral.sh/uv/)
 
 ## Run tests
 
-    pytests tests
+    pytest tests
