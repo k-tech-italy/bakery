@@ -1,0 +1,3 @@
+# Management Command
+
+Lorem ipsum
