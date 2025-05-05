@@ -1,1 +1,1 @@
-"""{{ cookiecutter.project__name }}"""
+"""Main {{ cookiecutter.project__name }} module."""

@@ -1,7 +1,5 @@
 """{{ cookiecutter.project__name }} exceptions."""
 
 
-class BaseException(Exception):
+class {{cookiecutter.__project__pascal_case_name}}Exception(Exception):
     """Base class for {{ cookiecutter.project__name }} exceptions."""
-
-    pass
