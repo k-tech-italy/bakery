@@ -1,9 +1,7 @@
-class SmartEnvException(Exception):
-    def __init__(self, key: str) -> None:
-        self.msg = key
+"""{{ cookiecutter.project__name }} exceptions."""
 
 
-class SmartEnvMissing(SmartEnvException):
+class BaseException(Exception):
+    """Base class for {{ cookiecutter.project__name }} exceptions."""
 
-    def __str__(self) -> str:
-        return f"Missing {self.msg}"
+    pass
