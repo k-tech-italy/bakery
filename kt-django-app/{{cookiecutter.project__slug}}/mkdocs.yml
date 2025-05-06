@@ -1,4 +1,4 @@
-copyright: Copyright &copy; 2020-2024 OS4D ltd.
+copyright: Copyright &copy; 2025 {{ cookiecutter.project__author }}
 dev_addr: 127.0.0.1:8001
 docs_dir: docs/src
 edit_uri: 'blob/develop/docs/'
@@ -6,7 +6,7 @@ repo_url: https://github.com/{{ cookiecutter.github_team }}/{{ cookiecutter.proj
 site_author: {{ cookiecutter.project__author }}
 site_description: ""
 site_dir: ./~build/docs
-site_name: Django SmartEnv
+site_name: {{ cookiecutter.project__name }}
 site_url: https://{{ cookiecutter.github_team }}.github.io/{{ cookiecutter.github_team }}/{{ cookiecutter.project__slug }}/
 strict: false
 

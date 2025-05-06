@@ -9,10 +9,9 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
-from . import env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,13 +74,18 @@ WSGI_APPLICATION = "demo.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+        "ENGINE": os.environ.get(
+            "DATABASE_ENGINE", 'django.db.backends.postgresql'
+        ),
+        "NAME": os.environ.get("DATABASE_NAME", "{{ cookiecutter.project__slug }}"),
+        "USER": os.environ.get("DATABASE_USER", 'postgres'),
+        "PASSWORD": os.environ.get("DATABASE_PASS", None),
+        "HOST": os.environ.get("DATABASE_HOST", 'localhost:5432')
+    },
 }
-
-SESSION_COOKIE_SECURE = env("SESSION_COOKIE_SECURE")
-SECURE_SSL_REDIRECT = env("SECURE_SSL_REDIRECT")
+# set to 'True' in production
+SESSION_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
