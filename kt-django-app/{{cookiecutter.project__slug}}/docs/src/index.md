@@ -2,26 +2,46 @@
 title: Documentation
 ---
 
-{{ cookiecutter.project__name }} is 
+{{ cookiecutter.project__name }} is a Django app.
 
-- extend configuration
-- management command
-- django check framework integration
+TODO: Provide a more detailed description here.
 
 
-## Install
+## Dependencies
 
-    pip install {{ cookiecutter.project__slug }}
+* Python 3.9 or later
+* Django 4.2 or any later version supporting your Python version of choice.
 
 
-In your `settings.py`:
-    
-    INSTALLED_APPS = [
-        ...
-        "{{ cookiecutter.project__module }}"
-    ]
+## Installation
 
-Check your configuration
+* Install {{ cookiecutter.project__slug }} using your package manager of choice, e.g. Pip:
+  ```bash
+  pip install {{ cookiecutter.project__slug }}
+  ```
 
-    python manage.py check
+* Add `{{ cookiecutter.project__slug }}` to `INSTALLED_APPS` in your `config/settings.py` file:
+  ```python
+  INSTALLED_APPS = (
+      ...
+      "{{ cookiecutter.project__slug }}",
+      ...
+  )
+  ```
 
+* Check that your configuration is valid:
+  ```bash
+  python manage.py check
+  ```
+
+## Bug reports and requests for enhancements
+
+Please open an issue on the project's [issue tracker on GitHub]({{ cookiecutter.__github_base_url }}/issues).
+
+## Contributing to the project
+
+See the [contribution guide](contributing.md).
+
+## Licensing
+
+All rights reserved.

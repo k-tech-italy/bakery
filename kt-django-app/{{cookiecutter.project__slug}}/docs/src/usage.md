@@ -1,7 +1,9 @@
 ---
-title: Configuration
+title: Getting started
 ---
 
-## Simple usage
+# How to use {{ cookiecutter.project__name }}
 
-Lorem ipsum
+## Configuration
+
+## Usage

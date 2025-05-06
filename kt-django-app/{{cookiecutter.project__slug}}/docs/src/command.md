@@ -1,3 +1,7 @@
-# Management Command
+---
+title: Management commands
+---
 
-Lorem ipsum
+# Management Commands
+
+None right now.

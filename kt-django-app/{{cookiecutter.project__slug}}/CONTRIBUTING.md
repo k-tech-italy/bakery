@@ -11,7 +11,6 @@ You can also use the issue tracker to find an open issue for you to work on. Ple
 You should fork this project, make changes in your own fork, then submit a pull request.
 
 To start working on this project:
-
 * Install [uv](https://docs.astral.sh/uv)
 * Clone the repository:
     ```bash
@@ -37,7 +36,7 @@ To start working on this project:
     uv sync
     ```
 
-**You must make sure that your changes are covered by unit and integration tests, and that it follows the project's stylistic guidelines.** In the absence of the latter, you should mimic the style and patterns in the existing codebase.
+You **must** make sure that your changes are covered by unit and integration tests, and that it follows the project's stylistic guidelines. In the absence of the latter, you should mimic the style and patterns in the existing codebase.
 
 ### Running tests
 

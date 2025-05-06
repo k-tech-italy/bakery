@@ -5,6 +5,7 @@
     "project__author": "KTech",
     "__project__pascal_case_name": "{{ cookiecutter.project__slug.split('-') | map('capitalize') | join }}",
     "github_team": "k-tech-italy",
+    "__github_base_url": "https://github.com/{{ cookiecutter.github_team }}/{{ cookiecutter.project__slug }}",
     "_copy_without_render": [
         "*.html",
         ".github/workflows/docs.yml",
