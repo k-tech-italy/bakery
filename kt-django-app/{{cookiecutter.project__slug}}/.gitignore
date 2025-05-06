@@ -17,3 +17,4 @@ build/
 !.pre-commit-config.yaml
 !bandit.yaml
 coverage.xml
+{{ cookiecutter.project__module }}.db

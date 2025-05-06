@@ -75,12 +75,9 @@ WSGI_APPLICATION = "demo.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get(
-            "DATABASE_ENGINE", 'django.db.backends.postgresql'
+            "DATABASE_ENGINE", 'django.db.backends.sqlite3'
         ),
-        "NAME": os.environ.get("DATABASE_NAME", "{{ cookiecutter.project__slug }}"),
-        "USER": os.environ.get("DATABASE_USER", 'postgres'),
-        "PASSWORD": os.environ.get("DATABASE_PASS", None),
-        "HOST": os.environ.get("DATABASE_HOST", 'localhost:5432')
+        "NAME": "{{ cookiecutter.project__module }}.db",
     },
 }
 # set to 'True' in production
