@@ -2,7 +2,7 @@
 
 ## Using the issue tracker
 
-You can suggest features, enhancements, or report bugs on our [issue tracker]({{ cookiecutter.__github_base_url }}/issues).
+You can suggest features, enhancements, or report bugs on our [issue tracker](https://github.com/k-tech-italy/example-project/issues).
 
 You can also use the issue tracker to find an open issue for you to work on. Please mention in the issue that you are working on it.
 
@@ -14,28 +14,35 @@ To start working on this project:
 
 * Install [uv](https://docs.astral.sh/uv)
 * Clone the repository:
-    ```bash
-    # using HTTPS
-    git clone {{ cookiecutter.__github_base_url }}.git
 
-    # using SSH
-    git clone git@github.com:{{ cookiecutter.github_team }}/{{ cookiecutter.project__slug }}.git
-    ```
+```bash
+# using HTTPS
+git clone https://github.com/k-tech-italy/example-project.git
+
+# using SSH
+git clone git@github.com:k-tech-italy/example-project.git
+```
+  
 * If you use [direnv](https://direnv.net/), copy the `.envrc.example` file as follows, otherwise skip this step:
-    ```bash
-    cp .envrc.example .envrc
-    ```
-* Create a virtual environment for the project using uv. Make sure you use the earliest supported Python version:
-    ```bash
-    uv venv create --python 3.9
 
-    # if you're not using direnv, you need to manually activate the virtual environment
-    source .venv/bin/activate
-    ```
+```bash
+cp .envrc.example .envrc
+```
+  
+* Create a virtual environment for the project using uv. Make sure you use the earliest supported Python version:
+
+```bash
+uv venv create --python 3.9
+
+# if you're not using direnv, you need to manually activate the virtual environment
+source .venv/bin/activate
+```
+  
 * Install the project's dependencies:
-    ```bash
-    uv sync
-    ```
+
+```bash
+uv sync
+```
 
 **You must make sure that your changes are covered by unit and integration tests, and that it follows the project's stylistic guidelines.** In the absence of the latter, you should mimic the style and patterns in the existing codebase.
 
