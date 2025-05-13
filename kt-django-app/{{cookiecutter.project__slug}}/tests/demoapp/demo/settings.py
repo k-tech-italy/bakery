@@ -73,13 +73,9 @@ WSGI_APPLICATION = "demo.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": os.environ.get(
-            "DATABASE_ENGINE", 'django.db.backends.sqlite3'
-        ),
-        "NAME": "{{ cookiecutter.project__module }}.db",
-    },
+    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ".db.sqlite", "HOST": "", "PORT": ""},
 }
+
 # set to 'True' in production
 SESSION_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False
