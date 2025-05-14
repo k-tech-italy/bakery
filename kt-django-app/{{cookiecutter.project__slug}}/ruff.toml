@@ -65,7 +65,7 @@ ignore = [
     "PLR2004", # Magic value used in comparison
     "DJ001",   # Avoid using `null=True` on string-based fields such as `CharField`
     "N818",    # Exception name {name} should be named with an Error suffix
-
+    "Q000", # Single quotes found but double quotes preferred
     # todos
     "BLE001",  # blind exception
     "S324",    # insecure md5
@@ -88,7 +88,7 @@ force-wrap-aliases = true
 combine-as-imports = true
 known-third-party = ['django']
 no-sections = false
-lines-after-imports = 1
+lines-after-imports = 2
 relative-imports-order = "furthest-to-closest"
 section-order = [
     "future",
