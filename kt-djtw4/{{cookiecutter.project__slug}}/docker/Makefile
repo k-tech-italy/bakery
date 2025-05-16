@@ -7,7 +7,7 @@ $(error DOCKER_REGISTRY is not set)
 endif
 
 # VARIABLES
-VERSION=1.0.0
+VERSION={{ cookiecutter.project__version }}
 BASE?=$(shell echo "${VERSION}" | sed "s/\([0-9]*\)\.\([0-9]*\)\.\(.*\)/\1.\2/g" )
 BUILDDIR?=./~build
 CONTAINER_NAME={{ cookiecutter.project__slug }}
@@ -36,6 +36,11 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
+guard-%:
+	@if [ "${${*}}" = "" ]; then \
+		echo "Environment variable $* not set"; \
+        exit 1; \
+    fi
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
@@ -62,25 +67,18 @@ build: ## Builds the image
 		-f docker/Dockerfile .
 	@docker images | grep ${DOCKER_IMAGE} | grep ${VERSION}
 
-ecrlogin:  ## Log in to docker
+registrylogin:  ## Log in to docker
 	@if [ "${ECR_AWS_PROFILE}" != "" ]; then \
 		aws ecr get-login-password --profile ${ECR_AWS_PROFILE} --region ${ECR_AWS_REGION} | docker login --username AWS --password-stdin ${DOCKER_REGISTRY} ; \
 	else \
-		@echo ${DOCKER_SECRET} | echo docker login ${DOCKER_REGISTRY} -u ${DOCKER_USERNAME} --password-stdin ; \
+		@echo ${DOCKER_PWD} | echo docker login ${DOCKER_REGISTRY} -u ${DOCKER_USR} --password-stdin ; \
     fi
 
-release: ecrlogin  ## Release the image
-	# docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}/base:${BASE}
-	docker push ${DOCKER_IMAGE_FULLNAME}
-	docker images | grep ${DOCKER_IMAGE}
+release:  registrylogin  ## Release imgae
+	@docker push ${DOCKER_IMAGE_FULLNAME}
+	@docker images | grep ${DOCKER_IMAGE}
 
-nexus-release:
-	docker tag ${DOCKER_IMAGE_FULLNAME} docker.singlewave.co.uk/${DOCKER_IMAGE}:${VERSION}
-	docker push docker.singlewave.co.uk/${DOCKER_IMAGE}:${VERSION}
-
-release-all: release nexus-release
-
-full-release:  build-base build release  ## buils all and releases
+full-release:  build-base build release  ## builds all and releases
 	@echo "Done"
 
 .run:
