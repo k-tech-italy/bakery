@@ -1,6 +1,7 @@
 .*
 ~*
 !.gitignore
+!.gitattributes
 !*.example
 !.python-version
 !.bumpversion.cfg
