@@ -23,7 +23,13 @@ source $nvmrc
 nvm use
 PATH_add node_modules/.bin
 
-. .venv/bin/activate
-unset PS1
+if [ -d .venv/Scripts ]; then
+  # On Windows (using a GIT bash)
+  . .venv/Scripts/activate
+else
+  . .venv/bin/activate
+  unset PS1
+fi
+
 
 
