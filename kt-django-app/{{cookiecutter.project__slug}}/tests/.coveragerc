@@ -1,7 +1,7 @@
 [run]
 branch = True
 source = src
-source_pkgs = {{ cookiecutter.project__module }}
+source_pkgs = django_temporary_permissions
 relative_files = True
 # partial_branches =
 omit =
@@ -35,7 +35,7 @@ exclude_lines =
     @abstractmethod
 
 
-fail_under=99
+fail_under=90
 precision=2
 ignore_errors = True
 

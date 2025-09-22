@@ -2,7 +2,7 @@
 title: Getting started
 ---
 
-# How to use {{ cookiecutter.project__name }}
+# How to use django-temporary-permissions
 
 ## Configuration
 

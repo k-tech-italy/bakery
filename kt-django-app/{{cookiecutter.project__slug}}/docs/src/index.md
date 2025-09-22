@@ -2,7 +2,7 @@
 title: Documentation
 ---
 
-{{ cookiecutter.project__name }} is a Django app.
+django-temporary-permissions is a Django app.
 
 TODO: Provide a more detailed description here.
 
@@ -15,16 +15,16 @@ TODO: Provide a more detailed description here.
 
 ## Installation
 
-* Install {{ cookiecutter.project__slug }} using your package manager of choice, e.g. Pip:
+* Install django_temporary_permissions using your package manager of choice, e.g. Pip:
   ```bash
-  pip install {{ cookiecutter.project__slug }}
+  pip install django_temporary_permissions
   ```
 
-* Add `{{ cookiecutter.project__slug }}` to `INSTALLED_APPS` in your `config/settings.py` file:
+* Add `django_temporary_permissions` to `INSTALLED_APPS` in your `config/settings.py` file:
   ```python
   INSTALLED_APPS = (
       ...
-      "{{ cookiecutter.project__slug }}",
+      "django_temporary_permissions",
       ...
   )
   ```
@@ -36,7 +36,7 @@ TODO: Provide a more detailed description here.
 
 ## Bug reports and requests for enhancements
 
-Please open an issue on the project's [issue tracker on GitHub]({{ cookiecutter.__github_base_url }}/issues).
+Please open an issue on the project's [issue tracker on GitHub](https://github.com/k-tech-italy/django_temporary_permissions/issues).
 
 ## Contributing to the project
 
