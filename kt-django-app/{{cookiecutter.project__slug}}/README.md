@@ -1,36 +1,36 @@
-# django-temporary-permissions
+# {{ cookiecutter.project__name }}
 
 <!--
-[![Test](https://github.com/k-tech-italy/django_temporary_permissions/actions/workflows/test.yml/badge.svg)](https://github.com/k-tech-italy/django_temporary_permissions/actions/workflows/test.yml)
-[![Lint](https://github.com/k-tech-italy/django_temporary_permissions/actions/workflows/lint.yml/badge.svg)](https://github.com/k-tech-italy/django_temporary_permissions/actions/workflows/lint.yml)
-[![Documentation](https://github.com/k-tech-italy/django_temporary_permissions/actions/workflows/docs.yml/badge.svg)](https://github.com/k-tech-italy/django_temporary_permissions/actions/workflows/docs.yml)
-[![codecov](https://codecov.io/github/k-tech-italy/django_temporary_permissions/graph/badge.svg?token=BNXEW4JAYF)](https://codecov.io/github/k-tech-italy/django_temporary_permissions)
+[![Test]({{ cookiecutter.__github_base_url }}/actions/workflows/test.yml/badge.svg)]({{ cookiecutter.__github_base_url }}/actions/workflows/test.yml)
+[![Lint]({{ cookiecutter.__github_base_url }}/actions/workflows/lint.yml/badge.svg)]({{ cookiecutter.__github_base_url }}/actions/workflows/lint.yml)
+[![Documentation]({{ cookiecutter.__github_base_url }}/actions/workflows/docs.yml/badge.svg)]({{ cookiecutter.__github_base_url }}/actions/workflows/docs.yml)
+[![codecov](https://codecov.io/github/{{ cookiecutter.github_team }}/{{ cookiecutter.project__slug }}/graph/badge.svg?token=BNXEW4JAYF)](https://codecov.io/github/{{ cookiecutter.github_team }}/{{ cookiecutter.project__slug }})
 -->
 
 
-django-temporary-permissions is a Django app.
+{{ cookiecutter.project__name }} is a Django app.
 
 NOTE: Provide a more detailed description here.
 
 
 ## Dependencies
 
-* Python 3.10 or later
+* Python 3.9 or later
 * Django 4.2 or later
 
 
 ## Installation
 
-* Install django_temporary_permissions using your package manager of choice, e.g. Pip:
+* Install {{ cookiecutter.project__slug }} using your package manager of choice, e.g. Pip:
   ```bash
-  pip install django_temporary_permissions
+  pip install {{ cookiecutter.project__slug }}
   ```
 
-* Add django_temporary_permissions to `INSTALLED_APPS` in your `config/settings.py` file:
+* Add {{ cookiecutter.project__slug }} to `INSTALLED_APPS` in your `config/settings.py` file:
   ```python
   INSTALLED_APPS = (
       ...
-      "django_temporary_permissions",
+      "{{ cookiecutter.project__slug }}",
       ...
   )
   ```
@@ -42,7 +42,7 @@ NOTE: Provide a more detailed description here.
 
 ## Bug reports and requests for enhancements
 
-Please open an issue on the project's [issue tracker on GitHub](https://github.com/k-tech-italy/django_temporary_permissions/issues).
+Please open an issue on the project's [issue tracker on GitHub]({{ cookiecutter.__github_base_url }}/issues).
 
 ## Contributing to the project
 
@@ -51,5 +51,6 @@ See the [contribution guide](CONTRIBUTING.md).
 ## Licensing
 
 All rights reserved.
+
 
 [![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)

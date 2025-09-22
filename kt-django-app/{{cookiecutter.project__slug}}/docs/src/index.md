@@ -2,29 +2,29 @@
 title: Documentation
 ---
 
-django-temporary-permissions is a Django app.
+{{ cookiecutter.project__name }} is a Django app.
 
 TODO: Provide a more detailed description here.
 
 
 ## Dependencies
 
-* Python 3.9 or later
+* Python 3.10 or later
 * Django 4.2 or any later version supporting your Python version of choice.
 
 
 ## Installation
 
-* Install django_temporary_permissions using your package manager of choice, e.g. Pip:
+* Install {{ cookiecutter.project__slug }} using your package manager of choice, e.g. Pip:
   ```bash
-  pip install django_temporary_permissions
+  pip install {{ cookiecutter.project__slug }}
   ```
 
-* Add `django_temporary_permissions` to `INSTALLED_APPS` in your `config/settings.py` file:
+* Add `{{ cookiecutter.project__slug }}` to `INSTALLED_APPS` in your `config/settings.py` file:
   ```python
   INSTALLED_APPS = (
       ...
-      "django_temporary_permissions",
+      "{{ cookiecutter.project__slug }}",
       ...
   )
   ```
@@ -36,7 +36,7 @@ TODO: Provide a more detailed description here.
 
 ## Bug reports and requests for enhancements
 
-Please open an issue on the project's [issue tracker on GitHub](https://github.com/k-tech-italy/django_temporary_permissions/issues).
+Please open an issue on the project's [issue tracker on GitHub]({{ cookiecutter.__github_base_url }}/issues).
 
 ## Contributing to the project
 
