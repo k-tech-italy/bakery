@@ -1,3 +1,5 @@
+# All . files are potentially dangerous - by KT convention we exclude them all, and instead allow
+# certain files in a conscious manner
 .*
 ~*
 !.gitignore
