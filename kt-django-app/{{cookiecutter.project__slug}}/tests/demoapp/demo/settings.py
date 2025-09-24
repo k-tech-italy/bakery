@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_temporary_permissions",
+    "{{cookiecutter.project__module}}",
 ]
 
 MIDDLEWARE = [

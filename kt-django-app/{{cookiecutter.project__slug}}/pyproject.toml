@@ -1,5 +1,5 @@
 [project]
-name = "django-temporary-permissions"
+name = "{{cookiecutter.project__slug}}"
 version = "0.1.0"
 description = ""
 readme = "README.md"
