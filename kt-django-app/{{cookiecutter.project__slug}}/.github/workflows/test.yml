@@ -56,7 +56,7 @@ jobs:
         with:
           path: |
             .uv
-          key: ${{ matrix.python-version }}-${{matrix.django-version}}-venv
+          key: ${{ github.ref_name }}-${{ matrix.python-version }}-${{matrix.django-version}}-venv
 
       - name: Test
         run: |

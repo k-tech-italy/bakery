@@ -5,6 +5,9 @@
 [![Lint]({{ cookiecutter.__github_base_url }}/actions/workflows/lint.yml/badge.svg)]({{ cookiecutter.__github_base_url }}/actions/workflows/lint.yml)
 [![Documentation]({{ cookiecutter.__github_base_url }}/actions/workflows/docs.yml/badge.svg)]({{ cookiecutter.__github_base_url }}/actions/workflows/docs.yml)
 [![codecov](https://codecov.io/github/{{ cookiecutter.github_team }}/{{ cookiecutter.project__slug }}/graph/badge.svg?token=BNXEW4JAYF)](https://codecov.io/github/{{ cookiecutter.github_team }}/{{ cookiecutter.project__slug }})
+[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![Pypi](https://badge.fury.io/py/{{ cookiecutter.project__slug }}.svg)](https://badge.fury.io/py/{{ cookiecutter.project__slug }})
+[![coverage](https://codecov.io/github/{{ cookiecutter.github_team }}/{{ cookiecutter.project__slug }}/coverage.svg?branch=develop)](https://codecov.io/github/{{ cookiecutter.github_team }}/{{ cookiecutter.project__slug }}?branch=develop)
 -->
 
 
@@ -51,6 +54,3 @@ See the [contribution guide](CONTRIBUTING.md).
 ## Licensing
 
 All rights reserved.
-
-
-[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
