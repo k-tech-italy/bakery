@@ -1,6 +1,7 @@
 import pytest
 from django.contrib.auth import get_user_model
 
+
 def test_example():
     assert True
 

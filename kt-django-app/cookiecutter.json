@@ -8,6 +8,7 @@
     "__github_base_url": "https://github.com/{{ cookiecutter.github_team }}/{{ cookiecutter.project__slug }}",
     "_copy_without_render": [
         "*.html",
+        ".github/actions/python-uv-setup/action.yaml",
         ".github/workflows/docs.yml",
         ".github/workflows/test.yml",
         ".github/workflows/lint.yml"
