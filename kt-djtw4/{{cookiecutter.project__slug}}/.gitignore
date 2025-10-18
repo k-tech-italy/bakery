@@ -6,6 +6,7 @@
 !.python-version
 !.bumpversion.cfg
 !.secrets.baseline
+!.pre-commit-config.yaml
 !.run
 !.nvmrc
 

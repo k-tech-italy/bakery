@@ -1,0 +1,81 @@
+exclude: '^$'
+fail_fast: false
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # See https://pre-commit.com/hooks.html for more hooks
+      - id: check-ast
+      - id: check-executables-have-shebangs
+      - id: name-tests-test
+        args: [ "--django" ]
+        exclude: (tests/_extras/.*|docs)
+      - id: trailing-whitespace
+
+      - id: debug-statements
+        exclude: (_plugin_template|python_twitter)
+        stages: [pre-commit]
+
+      - id: end-of-file-fixer
+        exclude: .bumpversion.cfg
+        stages: [pre-commit]
+
+      - id: check-merge-conflict
+        stages: [pre-commit]
+
+      - id: check-case-conflict
+        stages: [pre-commit]
+
+      - id: check-toml
+        stages: [pre-commit]
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+    -   id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: (tests/.*|.*/tenant\.sql|Pipfile\.lock|.*\.js|.gitlab-ci.yml|poetry.lock|src/datcoco/git_info.py)
+        stages: [pre-push]
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    # Ruff version.
+    rev: 'v0.11.7'
+    hooks:
+      - id: ruff
+
+  - repo: https://github.com/saxix/pch
+    rev: '0.1'
+    hooks:
+      - id: check-missed-migrations
+        args:
+          - src
+        stages: [ pre-commit ]
+        additional_dependencies: [ setuptools ]
+
+      - id: check-version-release-match
+        args:
+          - --pythonpath=src
+          - --package={{cookiecutter.project__module}}
+        stages: [pre-push]
+        additional_dependencies: [ setuptools ]
+
+      - id: check-untracked
+        args:
+          - src
+          - tests
+        stages: [pre-push]
+
+      - id: check-forbidden
+        args:
+          - -p
+          - \.showbrowser\(
+        stages: [pre-commit]
+        additional_dependencies: [ setuptools ]
+
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.0.0
+    hooks:
+    - id: commitizen
+    - id: commitizen-branch
+      stages:
+      - commit-msg
