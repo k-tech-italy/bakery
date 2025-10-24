@@ -15,49 +15,10 @@ SMART_ADMIN_APPS = [
 ]
 
 SMART_ADMIN_SECTIONS = {
-    'Accounting': [
-        'core.Invoice',
-        'core.InvoiceEntry',
-    ],
-    'Core': [
-        'core.City',
-        'core.Client',
-        'core.Country',
-        'core.Project',
-        'core.Resource',
-    ],
-    'Missions': [
-        'core.Mission',
-        'core.ExpenseCategory',
-        'core.Expense',
-        'core.PaymentCategory',
-        'core.DocumentType',
-        'core.ReimbursementCategory',
-        'core.Reimbursement',
-    ],
-    'Projects': [
-        'core.Project',
-        'core.Task',
-        'core.Basket',
-        'core.PO',
-    ],
-    'Timesheets': [
-        'core.TimeEntry',
-    ],
-    '_hidden_': ['sites'],
-    'Security': [
-        'auth',
-        'admin.LogEntry',
-        'social_django',
-        'core.UserProfile',
-        'core.User',
-        'token_blacklist'
-    ],
-    'Configuration': [
-        'constance',
-        'flags',
-        'currencies'
-    ]
+    # 'Accounting': [
+    #     'core.Invoice',
+    #     'core.InvoiceEntry',
+    # ],
 }
 
 SMART_ADMIN_URLS = [

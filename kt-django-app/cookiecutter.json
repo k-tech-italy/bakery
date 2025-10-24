@@ -2,7 +2,7 @@
     "project__name": "KTech Django Application",
     "project__slug": "{{ cookiecutter.project__name | slugify }}",
     "project__module": "{{ cookiecutter.project__slug | replace('-', '_') }}",
-    "project__author": "KTech",
+    "project__author": "K-Tech",
     "__project__pascal_case_name": "{{ cookiecutter.project__slug.split('-') | map('capitalize') | join }}",
     "github_team": "k-tech-italy",
     "__github_base_url": "https://github.com/{{ cookiecutter.github_team }}/{{ cookiecutter.project__slug }}",
@@ -10,6 +10,7 @@
         "*.html",
         ".github/workflows/docs.yml",
         ".github/workflows/test.yml",
-        ".github/workflows/lint.yml"
+        ".github/workflows/lint.yml",
+        ".github/actions/python-uv-setup/action.yaml"
     ]
 }

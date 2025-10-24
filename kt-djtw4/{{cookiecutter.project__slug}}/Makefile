@@ -79,6 +79,11 @@ reset-migrations: ## reset django migrations
 	@echo "\033[37;1m  - run ./manage.py demo --no-input"
 
 
+outdated:  ## Generates .outdated.txt and .tree.txt files
+	uv tree > .tree.txt
+	uv pip list --outdated > .outdated.txt
+
+
 lint:  ## code lint
 	pre-commit run --all-files
 
