@@ -50,7 +50,7 @@ reset-migrations: ## reset django migrations
 	./manage.py check
 	find src -name '0*[1,2,3,4,5,6,7,8,9,0]*' | xargs rm -f
 	rm -f *.db
-	./manage.py makemigrations {{cookiecutter.project__module}}
+	./manage.py makemigrations demo
 	./manage.py makemigrations --check
 	@echo "\033[31;1m You almost there:"
 	@echo "\033[37;1m  - add 'CITextExtension()' as first operations of src/{{cookiecutter.project__module}}/migrations/0001_initial.py"

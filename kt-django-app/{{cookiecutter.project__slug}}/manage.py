@@ -4,7 +4,7 @@ import os
 import pathlib
 import sys
 
-SRC_DIR = pathlib.Path(__file__).parent.parent.parent / "src"
+SRC_DIR = pathlib.Path(__file__).parent / "tests/demoapp"
 sys.path.insert(0, str(SRC_DIR.absolute()))
 
 
