@@ -9,6 +9,7 @@
 !.pre-commit-config.yaml
 !.run
 !.nvmrc
+!tests/.coveragerc
 
 *.sqlite3
 __pycache__
