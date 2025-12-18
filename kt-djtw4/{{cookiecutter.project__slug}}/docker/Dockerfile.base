@@ -33,6 +33,7 @@ RUN set -x \
         pkg-config \
         python3-dev \
         libpcre3-dev \
+        gettext libgettextpo-dev \
     " > /tmp/buildDeps \
     && apt-get update && apt-get install -y --no-install-suggests --no-install-recommends `cat /tmp/buildDeps` && rm -rf /var/lib/apt/lists/*
 

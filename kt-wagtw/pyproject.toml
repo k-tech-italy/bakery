@@ -1,0 +1,16 @@
+[project]
+name = "{{cookiecutter.project__slug}}"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "django-smart-env>=1.0",
+    "django-tailwind>=4.4.2",
+    "wagtail>=7.2.1",
+]
+
+[dependency-groups]
+dev = [
+    "django-tailwind[reload]>=4.4.2",
+]

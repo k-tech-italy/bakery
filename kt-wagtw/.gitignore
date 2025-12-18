@@ -1,0 +1,17 @@
+# Python-generated files
+~*
+.*
+
+!.dockerignore
+!.gitignore
+!.*.example
+!.pre-commit-config.yaml
+
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+*.db

@@ -80,11 +80,3 @@ repos:
         language: system
         files: '(\.po)$'
         pass_filenames: false
-
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.0.0
-    hooks:
-    - id: commitizen
-    - id: commitizen-branch
-      stages:
-      - commit-msg
