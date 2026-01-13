@@ -1,0 +1,5 @@
+site_name: "{{ cookiecutter.project__name }}"
+theme:
+  name: material
+nav:
+  - Home: index.md

@@ -67,6 +67,8 @@ dev = [
     "tox>=4.25.0",
     "detect-secrets>=1.5.0",
     "django-tailwind[reload]>=4.0.1",
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.0.0",
 ]
 image = [
     "circus>=0.19.0",
