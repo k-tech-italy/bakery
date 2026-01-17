@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+    {{ block.super }}
+        <style>
+        /* Custom scrollbar styling (optional) */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c7c7c7;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a3a3a3;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Define width for the first sticky column */
+        .th-col1, .td-col1 {
+            width: 10rem; /* 160px */
+            min-width: 10rem;
+            max-width: 10rem;
+        }
+        /* Define width for the second sticky column (optional, but good for consistency) */
+        .th-col2, .td-col2 {
+            width: 12rem; /* 192px */
+            min-width: 12rem;
+            max-wi
+    </style>
+{% endblock head %}
+
+{% block body %}
+    {{ block.super }}
+
+    <div class="w-full max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-8 text-base-content">Timesheet Report</h1>
+
+
+        <div class="overflow-x-auto rounded-lg shadow-xl custom-scrollbar border border-base-200">
+            <table class="table w-full table-zebra table-pin-cols">
+
+                <thead class="text-base-content">
+                    <tr>
+
+                        <th class="sticky left-0 z-30 bg-base-200 bg-opacity-95 backdrop-blur-sm th-col1">
+                            Employee ID
+                        </th>
+                        <th class="sticky left-[10rem] z-30 bg-base-200 bg-opacity-95 backdrop-blur-sm th-col2">Name</th>
+                        <th class="bg-base-200 bg-opacity-95 backdrop-blur-sm">Position</th>
+                        <th class="bg-base-200 bg-opacity-95 backdrop-blur-sm">Department</th>
+                        <th class="bg-base-200 bg-opacity-95 backdrop-blur-sm">Email</th>
+                        <th class="bg-base-200 bg-opacity-95 backdrop-blur-sm">Phone</th>
+                        <th class="bg-base-200 bg-opacity-95 backdrop-blur-sm">Hire Date</th>
+                        <th class="bg-base-200 bg-opacity-95 backdrop-blur-sm">Salary</th>
+                        <th class="bg-base-200 bg-opacity-95 backdrop-blur-sm">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-base-content">
+                    <tr>
+                        <td class="sticky left-0 z-20 font-medium bg-base-100 bg-opacity-90 backdrop-blur-sm th-col1">
+                            EMP002
+                        </td>
+                        <td class="sticky left-[10rem] z-20 bg-base-100 bg-opacity-90 backdrop-blur-sm td-col2">Bob Smith</td>
+                        <td>Project Manager</td>
+                        <td>Management</td>
+                        <td>bob.s@example.com</td>
+                        <td>555-0102</td>
+                        <td>2021-05-20</td>
+                        <td>$110,000</td>
+                        <td>
+                            <span class="badge badge-success badge-sm">Active</span>
+                            <span class="badge badge-warning badge-sm">On Leave</span>
+                            <span class="badge badge-error badge-sm">Inactive</span>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+        <p class="text-center mt-4 text-sm text-base-content/70">
+            Scroll horizontally to see all columns. The first column (Employee ID) will remain fixed.
+        </p>
+    </div>
+
+{% endblock body %}

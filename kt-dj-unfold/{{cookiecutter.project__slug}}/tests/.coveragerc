@@ -1,0 +1,55 @@
+[run]
+branch = True
+source = src/{{cookiecutter.project__module}}
+# partial_branches =
+# fail_under = 90
+omit =
+    .venv/*
+    */migrations/*
+    src/{{cookiecutter.project__module}}/apps.py
+    src/{{cookiecutter.project__module}}/config/wsgi.py
+    src/{{cookiecutter.project__module}}/config/fragments/sentry.py
+    src/{{cookiecutter.project__module}}/utils/sysinfo.py
+    src/{{cookiecutter.project__module}}/utils/threading.py
+    # Unused, might be removed
+    src/{{cookiecutter.project__module}}/config/context_processors.py
+    src/{{cookiecutter.project__module}}/web/loaders.py
+    src/{{cookiecutter.project__module}}/web/templatetags/file_status.py
+    src/{{cookiecutter.project__module}}/config/asgi.py
+    src/{{cookiecutter.project__module}}/utils/sentry.py
+    src/{{cookiecutter.project__module}}/utils/reflect.py
+    src/{{cookiecutter.project__module}}/sentry.py
+    src/{{cookiecutter.project__module}}/config/environ.py
+    src/{{cookiecutter.project__module}}/config/fragments/ddt.py
+    */admin_extras/*
+disable_warnings =
+    module-not-measured
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+    # Don't complain about missing debug-only code:
+    def __repr__
+    pass
+    if DEBUG
+    if SENTRY_ENABLED
+    if self\.debug
+    # Don't complain if tests don't hit defensive assertion code:
+    raise AssertionError
+    raise NotImplementedError
+    except ImportError
+    # Don't complain if non-runnable code isn't run:
+    #if 0:
+    if __name__ == .__main__.:
+    except ValidationError
+    #except Exception
+    if settings.DEBUG:
+    if typing.TYPE_CHECKING:
+
+
+ignore_errors = True
+
+[html]
+directory = ./~build/coverage

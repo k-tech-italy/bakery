@@ -1,0 +1,9 @@
+{
+    "project__name": "KTech Django Unfold",
+    "project__slug": "{{ cookiecutter.project__name | slugify }}",
+    "project__module": "{{ cookiecutter.project__slug | replace('-', '_') }}",
+    "project__author": "K-Tech",
+    "_copy_without_render": [
+        "*.html"
+    ]
+}

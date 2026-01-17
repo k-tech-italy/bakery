@@ -1,7 +1,14 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [
+  "hatch-vcs>=0.4",
+  "hatchling>=1.25",
+]
+
 [project]
-name = "{{ cookiecutter.project__slug }}"
-version = "{{ cookiecutter.project__version }}"
-description = "{{ cookiecutter.project__name }}"
+name = "{{cookiecutter.project_slug}}"
+version = "0.1.0"
+description = "{{cookiecutter.project__name}}"
 readme = "README.md"
 requires-python = ">=3.13"
 authors = [
@@ -30,27 +37,18 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Framework :: Django :: 5.2"
 ]
-packages = [
-    { include = "{{ cookiecutter.project__module }}", from = "src" },
-]
+
 dependencies = [
-    "celery>=5.5.1",
-    "cryptography>=44.0.2",
-    "django-admin-extra-buttons>=2.1",
-    "django-adminactions>=2.4",
-    "django-celery-beat>=2.8.0",
     "django-click>=2.4.1",
     "django-constance>=4.3.2",
     "django-cors-headers>=4.7.0",
-    "django-cotton>=2.0.3",
+    "django-crispy-forms>=2.5",
     "django-debug-toolbar>=5.1.0",
     "django-extensions>=4.1",
     "django-flags>=5.0.13",
     "django-regex>=0.5.0",
-    "django-smart-admin[sysinfo]>=3.0",
     "django-smart-env>=0.1.0",
-    "django-strategy-field>=3.1.0",
-    "django-tailwind>=4.0.1",
+    "django-unfold>=0.76.0",
     "django>=5.2",
     "psycopg[binary]>=3.2.6",
     "sentry-sdk>=2.26.1",
@@ -58,7 +56,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "bumpversion>=0.6.0",
     "pre-commit>=4.2.0",
     "pytest>=8.3.5",
     "pytest-coverage>=0.0",
@@ -78,19 +75,20 @@ image = [
 
 
 [tool.hatch]
-build.hooks.vcs.version-file = "src/bronziniss/version.py"
+build.hooks.vcs.version-file = "src/{{cookiecutter.project__module}}/version.py"
 version.source = "vcs"
 raw-options = { root = "../.." }
 artifacts = [
     "*.mo",
 ]
+
 [tool.hatch.version.raw-options]
 local_scheme = "no-local-version"
 
 [tool.hatch.build.targets.sdist]
 ignore-vcs = true
-only-include = [ "src/bronziniss" ]
+only-include = [ "src/{{cookiecutter.project__module}}" ]
 
 [tool.hatch.build.targets.wheel]
 ignore-vcs = true
-packages = [ "src/bronziniss" ]
+packages = [ "src/{{cookiecutter.project__module}}" ]
