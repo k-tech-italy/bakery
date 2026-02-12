@@ -10,8 +10,8 @@ endif
 VERSION=0.1.0
 BASE?=$(shell echo "${VERSION}" | sed "s/\([0-9]*\)\.\([0-9]*\)\.\(.*\)/\1.\2/g" )
 BUILDDIR?=./~build
-CONTAINER_NAME={{cookiecutter.project_slug}}
-DOCKER_IMAGE=kt/{{cookiecutter.project_slug}}
+CONTAINER_NAME={{cookiecutter.project__slug}}
+DOCKER_IMAGE=kt/{{cookiecutter.project__slug}}
 DOCKER_IMAGE_NAME=${DOCKER_IMAGE}:${VERSION}
 DOCKER_IMAGE_FULLNAME=${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${VERSION}
 STACK_PROTOCOL?=https
@@ -87,7 +87,7 @@ full-release:  build-base build release  ## builds all and releases
 	 		--name=${CONTAINER_NAME} \
 			-p "${LOCAL_PORT}:8000" \
 			-p "${LOCAL_HTTPS_PORT}:443" \
-			-e DJANGO_SETTINGS_MODULE="{{cookiecutter.project_module}}.config.settings" \
+			-e DJANGO_SETTINGS_MODULE="{{cookiecutter.project__module}}.config.settings" \
 			-e DEBUG="${DEBUG}" \
 			-e DATABASE_URL="${DATABASE_URL}" \
 			-e SECRET_KEY="${SECRET_KEY}" \

@@ -2,7 +2,10 @@
     "project__name": "KTech Django Unfold",
     "project__slug": "{{ cookiecutter.project__name | slugify }}",
     "project__module": "{{ cookiecutter.project__slug | replace('-', '_') }}",
+    "project__db": "{{ cookiecutter.project__module }}",
     "project__author": "K-Tech",
+    "node_version": "24",
+    "node_bin": "/usr/bin",
     "_copy_without_render": [
         "*.html"
     ]

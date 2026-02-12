@@ -128,3 +128,12 @@ detect-secrets:  ## Scanning secrets or adding New Secrets to Baseline
 		detect-secrets scan > .secrets.baseline ; \
 	fi
 	@detect-secrets scan --baseline .secrets.baseline
+
+
+develop:  ## To run once to setup the project
+	@if [ -f ".envrc" ]; then \
+  		echo ".envrc exists. Aborting" ; \
+  		exit 1 ; \
+	fi
+	cp .env.example .env
+	cp .envrc.example .envrc

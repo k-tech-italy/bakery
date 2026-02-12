@@ -1,3 +1,10 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [
+  "hatch-vcs>=0.4",
+  "hatchling>=1.25",
+]
+
 [project]
 name = "{{cookiecutter.project__slug}}"
 version = "0.1.0"
@@ -12,14 +19,17 @@ dependencies = [
 ]
 
 [project.scripts]
-{{ cookiecutter.click__command }} = "{{ cookiecutter.project_module }}.cli:main"
+{{ cookiecutter.click__command }} = "{{ cookiecutter.project__module }}.cli:main"
 
-[tool.uv]
 
 [dependency-groups]
-default-groups = ["dev"{% if cookiecutter.exe_builder %}, "exe_builder"{% endif %}]
 dev = [
+    "pytest>=8.3.3",
+    "pre-commit>=4.0.1",
+]
+
 {% if cookiecutter.mkdocs %}
+docs = [
     "cairosvg>=2.7.1",
     "markupsafe>=3.0.2",
     "mdx-gh-links>=0.4",
@@ -41,21 +51,38 @@ dev = [
     "mkdocstrings[python]>=0.27.0",
     "pymarkdown>=0.1.4",
     "pymdown-extensions>=10.14",
-{% endif %}
-    "bumpversion>=0.6.0",
-    "pytest>=8.3.3",
-    "pre-commit>=4.0.1",
 ]
+{% endif %}
+
 {% if cookiecutter.exe_builder %}
 exe_builder = [
     "pyinstaller>=6.11.0",
 ]
 {% endif %}
 
+[tool.uv]
+default-groups = ["dev"{% if cookiecutter.exe_builder %}, "exe_builder"{% endif %}{% if cookiecutter.mkdocs %}, "docs"{% endif %}]
+
 [tool.ruff]
 line-length = 120
 indent-width = 4
 
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+
+[tool.hatch]
+build.hooks.vcs.version-file = "src/{{ cookiecutter.project__module }}/version.py"
+version.source = "vcs"
+raw-options = { root = "../.." }
+artifacts = [
+    "*.mo",
+]
+
+[tool.hatch.version.raw-options]
+local_scheme = "no-local-version"
+
+[tool.hatch.build.targets.sdist]
+ignore-vcs = true
+only-include = [ "src/{{ cookiecutter.project__module }}" ]
+
+[tool.hatch.build.targets.wheel]
+ignore-vcs = true
+packages = [ "src/{{ cookiecutter.project__module }}" ]

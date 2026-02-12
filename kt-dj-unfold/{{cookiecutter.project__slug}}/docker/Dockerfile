@@ -1,9 +1,9 @@
 ARG BASE_IMAGE
 ARG DOCKER_REGISTRY
 
-FROM ${DOCKER_REGISTRY}/kt/{{cookiecutter.project_slug}}/base:${BASE_IMAGE}
+FROM ${DOCKER_REGISTRY}/kt/{{cookiecutter.project__slug}}/base:${BASE_IMAGE}
 
-ENV DJANGO_SETTINGS_MODULE="{{cookiecutter.project_module}}.config.settings"
+ENV DJANGO_SETTINGS_MODULE="{{cookiecutter.project__module}}.config.settings"
 ENV	MEDIA_ROOT="/data/media"
 ENV	STATIC_ROOT="/data/static"
 

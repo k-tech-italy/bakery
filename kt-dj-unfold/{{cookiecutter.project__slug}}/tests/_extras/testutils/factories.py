@@ -8,9 +8,9 @@ from factory import PostGenerationMethodCall
 from factory.base import FactoryMetaClass
 from factory.fuzzy import FuzzyDecimal
 
-from {{cookiecutter.project_module}}.config import settings
-from {{cookiecutter.project_module}}.core.models import User
-from {{cookiecutter.project_module}}.currencies.models import Currency
+from {{cookiecutter.project__module}}.config import settings
+from {{cookiecutter.project__module}}.core.models import User
+from {{cookiecutter.project__module}}.currencies.models import Currency
 
 factories_registry = {}
 

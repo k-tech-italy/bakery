@@ -79,14 +79,3 @@ test-all: ## run tests on every Python version with tox
 
 dev-email-ui:  ## Starts the console email smtp with UI
 	docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
-
-bump:   ## Bumps version
-	@while :; do \
-		read -r -p "bumpversion [major/minor/patch]: " PART; \
-		case "$$PART" in \
-			major|minor|patch) break ;; \
-  		esac \
-	done ; \
-	bumpversion --no-commit --allow-dirty $$PART
-	echo "" >> .bumpversion.cfg
-	@grep "^version = " pyproject.toml

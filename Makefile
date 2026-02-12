@@ -46,7 +46,7 @@ help:
 	@echo "You need to specify one of the following available recipe:"
 	@python3 -c "import os; print('\n'.join([f'PRJ={x} make bake' for x in os.listdir() if os.path.isfile(f'./{x}/cookiecutter.json')]))"
 
-bake: ## Bake the recipe into a cookie! Prefix with PRJ=<name> for baking the project
+bake: guard-NODE_VERSION  ## Bake the recipe into a cookie! Prefix with PRJ=<name> for baking the project
 	@if [ "${PRJ}" = "" ]; then \
 		$(MAKE) --no-print-directory .bake-list ; \
 	else \
@@ -55,10 +55,12 @@ bake: ## Bake the recipe into a cookie! Prefix with PRJ=<name> for baking the pr
 	  	  exit 1; \
 	  	fi ; \
 		echo "baking ${PRJ} ..." ; \
+		echo "Using node ${NODE_VERSION} ... set NODE_VERSION environment variable to change" ; \
+		echo "Using node bin ${NVM_BIN} ... set NODE_BIN variable to change it" ; \
 		mkdir -p ./demo-${PRJ} ; \
 		rm -rf ./demo-${PRJ}/* ; \
 		echo "${PRJ}" > ./demo-${PRJ}/.cookie ; \
-		cd ./demo-${PRJ} && cookiecutter ../${PRJ} ; \
+		cd ./demo-${PRJ} && cookiecutter ../${PRJ} node_version="${NODE_VERSION}" node_bin="${NVM_BIN}" ; \
 		echo "baked ${PRJ} in demo-${PRJ}/" ; \
 	fi
 

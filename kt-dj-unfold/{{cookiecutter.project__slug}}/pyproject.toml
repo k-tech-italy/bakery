@@ -6,7 +6,7 @@ requires = [
 ]
 
 [project]
-name = "{{cookiecutter.project_slug}}"
+name = "{{cookiecutter.project__slug}}"
 version = "0.1.0"
 description = "{{cookiecutter.project__name}}"
 readme = "README.md"
