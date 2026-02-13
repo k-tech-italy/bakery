@@ -1,5 +1,3 @@
-from cryptography.fernet import Fernet
-
 from .. import env as _env
 
 SECRET_KEY = _env('SECRET_KEY')
@@ -31,8 +29,6 @@ CORS_ORIGIN_WHITELIST.extend([f'{_proto}://{x}:3000' for x in ALLOWED_HOSTS])
 FORCE_DEBUG_SSL = _env('FORCE_DEBUG_SSL')
 
 CORS_ALLOW_CREDENTIALS = True
-
-FERNET_KEY = Fernet(_env('FERNET_KEY'))
 
 if _env('DEBUG'):
     AUTH_PASSWORD_VALIDATORS = []

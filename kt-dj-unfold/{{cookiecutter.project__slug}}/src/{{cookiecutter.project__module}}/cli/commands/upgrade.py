@@ -22,28 +22,6 @@ def configure_{{cookiecutter.project__module}}_app():
     pass
 
 
-def configure_beat():
-    from django_celery_beat.models import CrontabSchedule, IntervalSchedule
-
-    hourly, __ = IntervalSchedule.objects.get_or_create(
-        every=1,
-        period=IntervalSchedule.HOURS,
-    )
-
-    midnight, __ = CrontabSchedule.objects.get_or_create(
-        minute=0,
-        hour=0,
-        timezone=settings.TIME_ZONE,
-    )
-
-    minute, __ = IntervalSchedule.objects.get_or_create(
-        every=1,
-        period=IntervalSchedule.MINUTES,
-    )
-
-    # Create Periodic tasks here
-
-
 def configure_dirs(prompt, verbose):
     from {{cookiecutter.project__module}}.config import env
     for _dir in ('MEDIA_ROOT', 'STATIC_ROOT'):
@@ -138,10 +116,6 @@ def upgrade(ctx, prompt, migrate, static, verbose, run_check,  # noqa: C901
                 from .check import check
                 ctx.invoke(check, verbose=verbose, **kwargs)
 
-            if verbose >= 1:
-                click.echo('Configure default Celery Beat period tasks')
-            configure_beat()
-
             if admin_email:
                 try:
                     email = admin_email.strip()
@@ -162,7 +136,7 @@ def upgrade(ctx, prompt, migrate, static, verbose, run_check,  # noqa: C901
         cli_{{cookiecutter.project__module}}_execute_command.send(sender=upgrade, context=ctx)
 
         last_record = SysLogEntry.objects.filter(organization__is_core=True,
-                                                 extra__updated=True).first()
+                                                 extra__updated=True).first())
         current_version = get_full_version()
         if not last_record or last_record.extra.get('version', '') != current_version:
             from {{cookiecutter.project__module}}_version_upgraded.send(sender=core, version=current_version)

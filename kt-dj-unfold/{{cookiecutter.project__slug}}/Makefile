@@ -131,9 +131,21 @@ detect-secrets:  ## Scanning secrets or adding New Secrets to Baseline
 
 
 develop:  ## To run once to setup the project
+	@if [ ! -f ".git" ]; then \
+  		echo "Initializing git" ; \
+  		git init ; \
+	fi
+	@if [ ! -f ".venv" ]; then \
+  		echo "Creating venv: uv venv" ; \
+  		uv venv ; \
+  		uv sync ; \
+	fi
 	@if [ -f ".envrc" ]; then \
   		echo ".envrc exists. Aborting" ; \
   		exit 1 ; \
 	fi
 	cp .env.example .env
 	cp .envrc.example .envrc
+	echo "1. check you environment in .env . Pay attention to DB URL credentials."
+	echo "2. To create the DB: make .rest-db"
+	echo "3. To prepare the app: ./manage.py upgrade"

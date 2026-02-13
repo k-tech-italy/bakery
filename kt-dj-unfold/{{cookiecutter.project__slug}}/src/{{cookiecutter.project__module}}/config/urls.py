@@ -20,12 +20,10 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
-import adminactions.actions as actions
 from {{cookiecutter.project__module}}.config import env
 from django.contrib.admin import site
 
 admin.autodiscover()
-actions.add_to_site(site)
 
 urlpatterns = [
     path(f"{settings.ADMIN_PANEL_URL}/", admin.site.urls),

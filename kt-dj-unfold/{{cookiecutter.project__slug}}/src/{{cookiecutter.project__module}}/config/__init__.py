@@ -4,7 +4,6 @@ import uuid
 from pathlib import Path
 from urllib.parse import urlparse
 
-from cryptography.fernet import Fernet
 from django.utils.crypto import get_random_string
 from django.utils.http import urlencode
 from environ import Env
@@ -68,7 +67,6 @@ OPTIONS = dict(
     ),
     # Security
     SECRET_KEY=(str, "--"),
-    FERNET_KEY=(str, Fernet.generate_key().decode("utf-8")),
     INTERNAL_IPS=(list, ["127.0.0.1", "localhost"]),
     ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1"]),
     CSRF_COOKIE_SAMESITE=(str, "strict"),
