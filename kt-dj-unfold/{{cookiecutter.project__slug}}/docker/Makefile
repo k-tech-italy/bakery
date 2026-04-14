@@ -7,7 +7,7 @@ $(error DOCKER_REGISTRY is not set)
 endif
 
 # VARIABLES
-VERSION=0.1.0
+VERSION?=`python -c "from bronziniss.version import __version__; print(__version__)"`
 BASE?=$(shell echo "${VERSION}" | sed "s/\([0-9]*\)\.\([0-9]*\)\.\(.*\)/\1.\2/g" )
 BUILDDIR?=./~build
 CONTAINER_NAME={{cookiecutter.project__slug}}
@@ -71,12 +71,16 @@ registrylogin:  ## Log in to docker
 	@if [ "${ECR_AWS_PROFILE}" != "" ]; then \
 		aws ecr get-login-password --profile ${ECR_AWS_PROFILE} --region ${ECR_AWS_REGION} | docker login --username AWS --password-stdin ${DOCKER_REGISTRY} ; \
 	else \
-		@echo ${DOCKER_PWD} | echo docker login ${DOCKER_REGISTRY} -u ${DOCKER_USR} --password-stdin ; \
+		echo ${DOCKER_PWD} | docker login ${DOCKER_REGISTRY} -u ${DOCKER_USR} --password-stdin ; \
     fi
 
-release:  registrylogin  ## Release imgae
+release:  registrylogin  ## Release image
 	@docker push ${DOCKER_IMAGE_FULLNAME}
 	@docker images | grep ${DOCKER_IMAGE}
+
+release-latest:  release    ## Tag image as latest and release
+	@docker tag ${DOCKER_IMAGE_FULLNAME} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest
+	@docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest
 
 full-release:  build-base build release  ## builds all and releases
 	@echo "Done"
@@ -95,7 +99,7 @@ full-release:  build-base build release  ## builds all and releases
 			-e ADMIN_USERNAME="${ADMIN_USERNAME}" \
 			-e ADMIN_PASSWORD="${ADMIN_PASSWORD}" \
 			-e STACK_PROTOCOL=${STACK_PROTOCOL} \
-			--hostname host-ktech \
+			--hostname ${CONTAINER_NAME} \
 			-v "`pwd`/certs:/etc/certs:ro" \
 			-v "${STATIC_ROOT}:/data/static" \
 			-v "${MEDIA_ROOT}:/data/media" \

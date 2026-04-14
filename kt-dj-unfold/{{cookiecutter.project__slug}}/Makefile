@@ -149,3 +149,7 @@ develop:  ## To run once to setup the project
 	echo "1. check you environment in .env . Pay attention to DB URL credentials."
 	echo "2. To create the DB: make .rest-db"
 	echo "3. To prepare the app: ./manage.py upgrade"
+
+
+pip-install:  ## Reinstall the package. Useful sometime to align the version
+	uv pip install -e . && cat src/{{cookiecutter.project__slug}}/version.py && uv pip show {{cookiecutter.project__slug}}
