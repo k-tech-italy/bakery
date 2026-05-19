@@ -1,0 +1,69 @@
+target-version = "py{{ cookiecutter.python_version | replace('.', '') | truncate(4, false, '') }}"
+indent-width = 4
+line-length = 120
+
+[lint]
+select = [
+    "E4", "E7", "E9", # defaults
+    "A", # prevent using keywords that clobber python builtins
+    "B", # bugbear: security warnings
+    "BLE", # blind exceptions
+    "C4", # flake8-comprehensions
+    "C90", # McCabe complexity
+    "COM", # flake8-commas
+    "D", # pydocstyle
+    "DJ", # flake8-django
+    "E", # pycodestyle
+    "ERA", # eradicate
+    "F", # pyflakes
+    "FLY", # flynt
+    "FURB", # refurb
+    "I", # isort
+    "ICN", # flake8-import-conventions
+    "ISC", # implicit string concatenation
+    "N", # Pep* naming
+    "PERF", # perflint
+    "PIE", # flake8-pie
+    "PL", # PyLint
+    "PT", # flake8-pytest-style
+    "Q", # flake8-quotes
+    "R", # PyLint Refactor
+    "RET", # flake8-return
+    "S", # bandit
+    "SIM", # flake8-simplify
+    "T10", # flake8-debugger
+    "T20", # flake8-print
+    "TC", # flake8-type-checking
+    "UP", # pyupgrade
+    "W", # pycodestyle warnings
+    "YTT", # flake8 2020
+]
+
+ignore = [
+    "COM812",
+    "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107",
+    "D203", "D212", "D213",
+    "E731",
+    "ISC001",
+    "RUF005", "RUF012",
+    "I001",
+    "UP037", "UP035", "UP031",
+    "SIM108",
+    "PLR2004",
+    "DJ001",
+]
+
+[lint.per-file-ignores]
+"manage.py" = ["PLC0415"]
+"tests/**.py" = ["PLC0415", "S101", "S603", "S607"]
+"**/management/commands/**.py" = ["PLC0415"]
+"**/apps.py" = ["PLC0415"]
+
+[lint.isort]
+case-sensitive = true
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

@@ -1,0 +1,4 @@
+# Add CVE exceptions below. Always document the reason and when to revisit.
+# Example:
+# CVE-XXXX-YYYY
+# Status: no fix available in base image as of YYYY-MM-DD; revisit when patched.

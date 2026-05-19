@@ -1,12 +1,20 @@
 {
-    "project__name": "Django KT template by K-Tech",
-    "project__slug": "{{ cookiecutter.project__name | slugify }}",
-    "project__module": "{{ cookiecutter.project__slug | replace('-', '_') }}",
-    "project__version": "0.1.0",
-    "project__author": "G.Bronzini",
-    "project__description": "A Django React project",
-    "environ__prefix": "{{ cookiecutter.project__slug.upper()|replace('-', '') }}",
-    "_copy_without_render": [
-        "*.html"
-    ]
+  "project_name": "My Project",
+  "project_slug": "my-project",
+  "package_name": "myproject",
+  "first_app_name": "core",
+  "description": "A Django + React project",
+  "author_name": "Your Name",
+  "author_email": "you@example.com",
+  "year": "2026",
+  "python_version": "3.13",
+  "node_version": "22",
+  "django_version": "5.2",
+  "postgres_version": "17",
+  "redis_version": "8",
+  "use_celery": ["yes", "no"],
+  "use_sentry": ["yes", "no"],
+  "use_mkdocs": ["yes", "no"],
+  "use_trivy": ["yes", "no"],
+  "open_source_license": ["MIT", "Apache-2.0", "none"]
 }

@@ -1,0 +1,172 @@
+name: 'Test'
+on:
+  push:
+    branches:
+      - develop
+      - feature/*
+      - bugfix/*
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: "${{ '{{' }} github.workflow {{ '}}' }}-${{ '{{' }} github.ref {{ '}}' }}"
+  cancel-in-progress: true
+
+jobs:
+  python-test:
+    name: 'Python Test'
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:{{ cookiecutter.postgres_version }}
+        env:
+          POSTGRES_DATABASE: {{ cookiecutter.package_name }}
+          POSTGRES_PASSWORD: postgres  # pragma: allowlist secret
+          POSTGRES_USERNAME: postgres
+        ports:
+          - 15432:5432
+      {% if cookiecutter.use_celery == "yes" %}redis:
+        image: redis:{{ cookiecutter.redis_version }}
+        ports:
+          - 16379:6379
+      {% endif %}
+    env:
+      DJANGO_SETTINGS_MODULE: '{{ cookiecutter.package_name }}.config.settings'
+      DATABASE_URL: "postgres://postgres:postgres@localhost:15432/{{ cookiecutter.package_name }}"  # pragma: allowlist secret
+      {% if cookiecutter.use_celery == "yes" %}CELERY_BROKER_URL: "redis://localhost:16379/0"
+      {% endif %}
+    steps:
+      - name: 'Check out repository code'
+        uses: actions/checkout@v4
+      - name: 'Install uv'
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: latest
+          enable-cache: true
+          prune-cache: false
+          cache-local-path: ./uv-cache
+          cache-dependency-glob: |
+            **/pyproject.toml
+            **/uv.lock
+      - name: 'Restore cached env'
+        id: cache-env-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ./uv-cache
+          key: ${{ '{{' }} runner.os {{ '}}' }}-venv-dev
+      - name: 'Install dependencies'
+        run: uv sync --cache-dir ./uv-cache --frozen --group dev
+      - name: 'Save updated env'
+        uses: actions/cache/save@v4
+        with:
+          path: ./uv-cache
+          key: ${{ '{{' }} steps.cache-env-restore.outputs.cache-primary-key {{ '}}' }}
+      - name: 'Restore cached Node packages'
+        id: cache-node-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ./frontend/node_modules
+          key: ${{ '{{' }} runner.os {{ '}}' }}-node-dev
+      - name: 'Setup Node'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: frontend/.nvmrc
+      - name: 'Install Node dependencies'
+        run: npm ci
+        working-directory: ./frontend
+      - name: 'Save updated Node packages'
+        uses: actions/cache/save@v4
+        with:
+          path: ./frontend/node_modules
+          key: ${{ '{{' }} steps.cache-node-restore.outputs.cache-primary-key {{ '}}' }}
+      - name: 'Configure workspace'
+        run: mkdir ./~data
+      - name: 'Run tests'
+        run: uv run pytest tests --create-db --no-functional --cov --cov-report xml:coverage.xml
+      - name: 'Upload coverage artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.xml
+
+  frontend-test:
+    name: 'Frontend Test'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check out repository code'
+        uses: actions/checkout@v4
+      - name: 'Setup Node'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: frontend/.nvmrc
+      - name: 'Restore cached Node packages'
+        id: cache-node-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ./frontend/node_modules
+          key: ${{ '{{' }} runner.os {{ '}}' }}-node-dev
+      - name: 'Install Node dependencies'
+        run: npm ci
+        working-directory: ./frontend
+      - name: 'Save updated Node packages'
+        uses: actions/cache/save@v4
+        with:
+          path: ./frontend/node_modules
+          key: ${{ '{{' }} steps.cache-node-restore.outputs.cache-primary-key {{ '}}' }}
+      - name: 'Run Vitest'
+        run: npm run test:coverage
+        working-directory: ./frontend
+      - name: 'Upload coverage artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: frontend/coverage/
+
+  code-coverage:
+    name: 'Code Coverage'
+    needs: [python-test, frontend-test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check out repository code'
+        uses: actions/checkout@v4
+      - name: 'Download Python coverage artifact'
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage
+      - name: 'Download frontend coverage artifact'
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-coverage
+          path: frontend-coverage/
+      - name: 'Python coverage report'
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: coverage.xml
+          thresholds: '70 90'
+          badge: true
+          output: console
+      - name: 'Upload Python coverage to Codecov'
+        uses: codecov/codecov-action@v5
+        env:
+          CODECOV_SECRET_TOKEN: ${{ '{{' }} secrets.CODECOV_TOKEN {{ '}}' }}
+        if: ${{ '{{' }} env.CODECOV_SECRET_TOKEN != '' {{ '}}' }}
+        with:
+          fail_ci_if_error: true
+          files: coverage.xml
+          flags: python
+          name: {{ cookiecutter.project_slug }}-python
+          token: ${{ '{{' }} secrets.CODECOV_TOKEN {{ '}}' }}
+          verbose: true
+      - name: 'Upload frontend coverage to Codecov'
+        uses: codecov/codecov-action@v5
+        env:
+          CODECOV_SECRET_TOKEN: ${{ '{{' }} secrets.CODECOV_TOKEN {{ '}}' }}
+        if: ${{ '{{' }} env.CODECOV_SECRET_TOKEN != '' {{ '}}' }}
+        with:
+          fail_ci_if_error: true
+          files: frontend-coverage/lcov.info
+          flags: frontend
+          name: {{ cookiecutter.project_slug }}-frontend
+          token: ${{ '{{' }} secrets.CODECOV_TOKEN {{ '}}' }}
+          verbose: true

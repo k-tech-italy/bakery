@@ -1,0 +1,79 @@
+exclude: ^$
+fail_fast: false
+repos:
+- repo: local
+  hooks:
+  - id: ruff
+    name: ruff
+    entry: ruff
+    language: system
+    args:
+    - check
+    - --fix
+    stages: [pre-commit]
+    types: [python]
+    exclude: "^(manage\\.py|docs/)"
+  - id: ruff-format
+    name: ruff format
+    entry: ruff format
+    language: system
+    stages: [pre-commit]
+    types: [python]
+  - id: mypy
+    name: mypy
+    entry: mypy
+    language: system
+    args:
+    - "--config-file"
+    - ".mypy.ini"
+    pass_filenames: false
+    stages: [pre-commit]
+    types: [python]
+  - id: frontend-lint
+    name: frontend lint
+    entry: bash -c 'cd frontend && npm run lint'
+    language: system
+    pass_filenames: false
+    files: ^frontend/
+    stages: [pre-commit]
+  - id: frontend-typecheck
+    name: frontend typecheck
+    entry: bash -c 'cd frontend && npm run typecheck'
+    language: system
+    pass_filenames: false
+    files: ^frontend/
+    stages: [pre-commit]
+- repo: https://github.com/Yelp/detect-secrets
+  rev: v1.5.0
+  hooks:
+  - id: detect-secrets
+    args: [--baseline, .secrets.baseline]
+    exclude: (tests/.*|uv.lock)
+    stages: [pre-commit]
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: check-ast
+  - id: check-executables-have-shebangs
+  - id: check-shebang-scripts-are-executable
+    exclude: "^docs/"
+  - id: name-tests-test
+    args: [--django]
+    exclude: ^tests/_extras/test_utils/
+  - id: trailing-whitespace
+  - id: debug-statements
+    stages: [pre-commit]
+  - id: end-of-file-fixer
+    stages: [pre-commit]
+  - id: check-merge-conflict
+    stages: [pre-commit]
+  - id: check-case-conflict
+    stages: [pre-commit]
+  - id: check-toml
+    stages: [pre-commit]
+- repo: https://github.com/commitizen-tools/commitizen
+  rev: v4.0.0
+  hooks:
+  - id: commitizen
+  - id: commitizen-branch
+    stages: [pre-push]
