@@ -1,0 +1,12 @@
+[run]
+source = {{ cookiecutter.package_name }}
+omit =
+    */migrations/*
+    */config/*
+    */management/*
+
+[report]
+skip_covered = True
+skip_empty = True
+show_missing = True
+fail_under = 70

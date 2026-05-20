@@ -5,6 +5,17 @@
 !.gitignore
 !.*.example
 !.python-version
+!.nvmrc
+!.bandit
+!.cz.toml
+!.dockerignore
+!.github
+!.mypy.ini
+!.pre-commit-config.yaml
+!.pytest.ini
+!.ruff.toml
+!.trivyignore
+!.coveragerc
 
 __pycache__
 

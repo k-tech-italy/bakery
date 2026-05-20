@@ -1,0 +1,82 @@
+name: 'Check'
+on:
+  push:
+    branches:
+      - develop
+      - feature/*
+      - bugfix/*
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: "${{ '{{' }} github.workflow {{ '}}' }}-${{ '{{' }} github.ref {{ '}}' }}"
+  cancel-in-progress: true
+
+jobs:
+  python-checks:
+    name: 'Python Checks'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check out repository code'
+        uses: actions/checkout@v4
+      - name: 'Install uv'
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: latest
+          enable-cache: true
+          prune-cache: false
+          cache-local-path: ./uv-cache
+          cache-dependency-glob: |
+            **/pyproject.toml
+            **/uv.lock
+      - name: 'Restore cached env'
+        id: cache-env-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ./uv-cache
+          key: ${{ '{{' }} runner.os {{ '}}' }}-venv-checks
+      - name: 'Install dependencies'
+        run: uv sync --cache-dir ./uv-cache --frozen --group checks
+      - name: 'Save updated env'
+        uses: actions/cache/save@v4
+        with:
+          path: ./uv-cache
+          key: ${{ '{{' }} steps.cache-env-restore.outputs.cache-primary-key {{ '}}' }}
+      - name: 'Run Ruff check'
+        run: uv run ruff check
+      - name: 'Run Ruff format check'
+        run: uv run ruff format --check
+      - name: 'Run MyPy'
+        run: uv run mypy --config-file .mypy.ini --non-interactive
+
+  frontend-checks:
+    name: 'Frontend Checks'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check out repository code'
+        uses: actions/checkout@v4
+      - name: 'Setup Node'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: frontend/.nvmrc
+      - name: 'Restore cached Node packages'
+        id: cache-node-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ./frontend/node_modules
+          key: ${{ '{{' }} runner.os {{ '}}' }}-node-checks
+      - name: 'Install Node dependencies'
+        run: npm ci
+        working-directory: ./frontend
+      - name: 'Save updated Node packages'
+        uses: actions/cache/save@v4
+        with:
+          path: ./frontend/node_modules
+          key: ${{ '{{' }} steps.cache-node-restore.outputs.cache-primary-key {{ '}}' }}
+      - name: 'Run ESLint'
+        run: npm run lint
+        working-directory: ./frontend
+      - name: 'Run TypeScript type check'
+        run: npm run typecheck
+        working-directory: ./frontend

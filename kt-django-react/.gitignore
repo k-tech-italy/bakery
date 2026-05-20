@@ -1,0 +1,22 @@
+# Override the bakery root convention (.*) — this template repo needs dotfiles tracked
+!.*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Template test output (cookiecutter --output-dir)
+output/
+test-output/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
