@@ -27,8 +27,18 @@ defaults.
 - API schema via `drf-spectacular` with `COMPONENT_SPLIT_REQUEST = True`; custom tags and
   postprocessing hooks live in the app's `api/openapi.py`.
 - The `upgrade` management command (check → collectstatic → migrate →
-  remove_stale_contenttypes → createsuperuser) must be idempotent; run it on every deploy.
+  remove_stale_contenttypes → createsuperuser → per-app init commands) must be idempotent;
+  run it on every deploy. **Always verify changes by running `upgrade`, never individual commands.**
+- Each app that needs seed data owns an `init_<app>` management command; `upgrade` calls them
+  in order after migrations.
+- Seed data lives in `<app>/data/<name>.csv`. Init commands use `get_or_create` — never
+  `update_or_create` — so manual edits made through the UI are never overwritten.
 - Never edit migration files by hand; always use `makemigrations` after model changes.
+- Always use `user.set_password(raw) + user.save()` to hash passwords. Never
+  `User.objects.update(password=raw)` — that stores plaintext and breaks authentication.
+- `django_stubs_ext.monkeypatch()` is called at the top of `settings.py`. Django classes are
+  therefore subscriptable at runtime — use `ModelAdmin[MyModel]` syntax freely; never add
+  `# type: ignore[type-arg]` to work around missing type arguments.
 
 ---
 
@@ -79,13 +89,19 @@ Rules:
 - `tests/unit/` — fast, no external deps; `tests/functional/` — DB + browser;
   `tests/integration/` — cross-component.
 - Shared fixtures in `tests/conftest.py`: `api_client`, `admin_user`, `regular_user`,
-  `authenticated_client`, `admin_client`, `tmp_media_root`.
+  `authenticated_client`, `api_admin_client`, `tmp_media_root`.
+- For Django admin view tests use pytest-django's built-in `admin_client` fixture (session-based
+  Django `Client`). For REST API tests use `api_admin_client` (token-based `APIClient`).
+  Do not confuse the two — the project intentionally keeps them under different names.
 - Celery fixtures in `tests/_extras/test_utils/celery.py`: `celery_config`, re-exported
   `celery_app`, `celery_worker`, `run_celery_task_in_background`.
 - Selenium fixtures in `tests/functional/conftest.py`: `selenium_driver` (session-scoped),
   `browser` (driver + live_server), `frontend_server` (Vite preview build).
 - `UserFactory` in `tests/_extras/test_utils/factories.py`; exposes `_raw_password`.
 - Use `--no-functional` to skip slow browser tests locally.
+- Only test logic **we wrote**. Do not write tests that only assert on Django framework
+  internals (field `max_length`, `db_table`, ORM CRUD). Admin tests must be view tests
+  (HTTP requests via `admin_client`), not class-attribute checks.
 - Coverage gate: 70 % (fail_under). Target: 90 %.
 - `--reuse-db` locally; always `--create-db` in CI.
 
