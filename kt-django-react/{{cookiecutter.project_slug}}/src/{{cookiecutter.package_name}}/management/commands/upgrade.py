@@ -49,4 +49,6 @@ def command(check_deploy: bool, admin_user: str, admin_email: str, admin_passwor
             )
 
         call_command("createsuperuser", email=admin_email, username=admin_user, interactive=False, **extra)
-        User.objects.filter(username=admin_user).update(password=admin_password)
+        user = User.objects.get(username=admin_user)
+        user.set_password(admin_password)
+        user.save()

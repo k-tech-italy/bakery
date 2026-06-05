@@ -1,5 +1,6 @@
 exclude: ^$
 fail_fast: false
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
 repos:
 - repo: local
   hooks:

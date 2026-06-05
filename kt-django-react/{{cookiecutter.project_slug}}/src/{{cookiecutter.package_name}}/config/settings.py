@@ -1,9 +1,12 @@
+import django_stubs_ext
 import environ
 {% if cookiecutter.use_sentry == "yes" %}import sentry_sdk
 {% endif %}
 from pathlib import Path
 
 import {{ cookiecutter.package_name }}
+
+django_stubs_ext.monkeypatch()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 

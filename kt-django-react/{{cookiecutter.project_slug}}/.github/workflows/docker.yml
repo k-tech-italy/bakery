@@ -58,7 +58,7 @@ jobs:
           trivy image --quiet --severity HIGH,CRITICAL --format table \
             {{ cookiecutter.project_slug }}-${{ '{{' }} matrix.name {{ '}}' }}:${{ '{{' }} github.sha {{ '}}' }} || true
       - name: 'Gate on vulnerabilities'
-        uses: aquasecurity/trivy-action@0.31.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: {{ cookiecutter.project_slug }}-${{ '{{' }} matrix.name {{ '}}' }}:${{ '{{' }} github.sha {{ '}}' }}
           format: sarif

@@ -68,7 +68,7 @@ def authenticated_client(api_client: APIClient, regular_user):
 
 
 @pytest.fixture
-def admin_client(api_client: APIClient, admin_user):
+def api_admin_client(api_client: APIClient, admin_user):
     token, _ = Token.objects.get_or_create(user=admin_user)
     api_client.credentials(HTTP_AUTHORIZATION=f"Token {token.key}")
     return api_client
