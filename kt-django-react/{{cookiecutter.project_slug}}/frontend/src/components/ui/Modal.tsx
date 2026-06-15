@@ -18,10 +18,10 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
   }, [open]);
 
   return (
-    <dialog ref={dialogRef} onClose={onClose} className="rounded-lg p-0 shadow-xl backdrop:bg-black/40">
-      <article className="min-w-80 p-6">
-        <header className="mb-4">
-          <h2 className="text-lg font-semibold">{title}</h2>
+    <dialog ref={dialogRef} onClose={onClose} className="modal">
+      <article className="modal-body">
+        <header className="modal-header">
+          <h2 className="modal-title">{title}</h2>
         </header>
         <section>{children}</section>
       </article>

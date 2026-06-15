@@ -203,39 +203,56 @@ Rules:
 
 ### Semantic CSS
 
-Define all brand colors, radii, and spacing as CSS custom properties inside `@theme` —
-never use raw Tailwind palette shades (e.g. `blue-500`) for brand-specific colors:
+Semantic CSS is **mandatory across the entire project**. The rule covers not just colors
+but all visual definitions — spacing, typography, borders, radii, shadows.
+
+**Three layers, each with a clear role:**
+
+| Layer | What goes here | Example |
+|---|---|---|
+| `@theme` in `index.css` | Design tokens: colors, radii | `--color-primary`, `--radius-card` |
+| `@layer components` in `index.css` | Named UI patterns | `.btn`, `.card`, `.nav-link` |
+| JSX `className` | Semantic class name + one-off layout | `"btn btn-primary mt-4 w-full"` |
+
+**`@theme` — tokens only, no raw values in components:**
 
 ```css
-/* src/index.css */
 @theme {
-  --color-primary:       oklch(65% 0.2 240);
-  --color-primary-hover: oklch(58% 0.2 240);
-  --color-danger:        oklch(60% 0.22 28);
-  --color-surface:       oklch(98% 0 0);
-  --color-surface-dark:  oklch(15% 0 0);
-  --radius-base:         0.375rem;
+  --color-primary:   oklch(54.6% 0.215 263);
+  --color-danger:    oklch(57.7% 0.245  27);
+  --radius-base:     0.375rem;
+  --radius-card:     0.75rem;
 }
 ```
 
-Tokens become Tailwind utilities automatically: `bg-primary`, `text-danger`,
-`rounded-base`. Add new design tokens here instead of using arbitrary values
-(`bg-[#3b82f6]`).
+Tokens become Tailwind utilities automatically: `bg-primary`, `rounded-card`.
+Never use raw palette shades (`blue-600`, `gray-300`) or hex values anywhere in
+components — not in `className`, not in `style={{}}`, not in SVG attributes.
 
-For reusable component patterns that appear in three or more places, use
-`@layer components` inside `index.css`:
+**`@layer components` — every reusable visual pattern gets a name:**
 
 ```css
 @layer components {
-  .btn {
-    @apply inline-flex items-center rounded-base px-4 py-2 text-sm font-medium;
-  }
-  .btn-primary { @apply btn bg-primary text-white hover:bg-primary-hover; }
-  .btn-danger  { @apply btn bg-danger text-white; }
+  .btn         { @apply inline-flex rounded-base px-3 py-1.5 text-sm font-medium …; }
+  .btn-primary { @apply bg-primary text-surface hover:bg-primary-hover; }
+  .card        { @apply rounded-card border border-border bg-surface shadow-sm; }
 }
 ```
 
-One-off styles belong in the TSX utility class list, not in `@layer components`.
+If a set of utilities describes *what something is* (a button, a card, a nav link),
+it belongs here. If it describes *where something sits* in a specific layout (margin,
+width, flex context unique to one usage), it can stay in JSX.
+
+**JSX — semantic name + contextual layout only:**
+
+```tsx
+// ✅ correct
+<button className="btn btn-primary mt-4 w-full">Save</button>
+<article className="card p-8">…</article>
+
+// ❌ wrong — visual recipe in the markup
+<button className="inline-flex rounded-md bg-blue-600 px-3 py-2 text-sm text-white …">
+```
 
 ---
 

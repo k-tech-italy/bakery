@@ -34,13 +34,13 @@ export function LoginPage() {
   }
 
   return (
-    <section className="flex min-h-screen items-center justify-center bg-gray-50">
-      <article className="w-full max-w-sm rounded-xl border bg-white p-8 shadow-sm">
-        <header className="mb-6 text-center">
-          <h1 className="text-2xl font-bold">{{ cookiecutter.project_name }}</h1>
-          <p className="mt-1 text-sm text-gray-500">Sign in to your account</p>
+    <section className="auth-page">
+      <article className="auth-card">
+        <header className="auth-header">
+          <h1 className="auth-title">{{ cookiecutter.project_name }}</h1>
+          <p className="auth-subtitle">Sign in to your account</p>
         </header>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+        <form onSubmit={handleSubmit} className="auth-form" noValidate>
           <Input
             label="Username"
             value={username}
@@ -56,7 +56,7 @@ export function LoginPage() {
             autoComplete="current-password"
             required
           />
-          {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+          {error && <p role="alert" className="field-error">{error}</p>}
           <Button type="submit" disabled={isLoading} className="mt-2 w-full">
             {isLoading ? "Signing in…" : "Sign in"}
           </Button>
