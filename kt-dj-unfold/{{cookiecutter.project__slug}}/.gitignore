@@ -10,6 +10,7 @@
 !.run
 !.nvmrc
 !tests/.coveragerc
+!.dockerignore
 
 *.sqlite3
 __pycache__
