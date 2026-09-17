@@ -15,3 +15,18 @@
 
 A [Django](https://www.djangoproject.com/) project with:
 - [Django Unfold](https://unfoldadmin.com/docs)
+
+
+## 1 min startup
+
+```bash
+cp .env.example .env
+cp .envrc.example .envrc
+# Now edit you .env accordingly
+uv venv
+direnv allow
+uv sync
+tools/dev/initdb.sh
+./manage.py upgrade
+./manage.py runserver
+```
